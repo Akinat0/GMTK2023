@@ -96,12 +96,16 @@ public class GameScene : MonoBehaviour
         
         character = character ? character : Instantiate(characterPrefab);
         character.transform.DOComplete();
-        character.transform.DOKill();
         character.transform.position = startRoom.transform.position;
         character.transform.localScale = Vector3.zero;
-        character.transform.DOScale(Vector3.one, 0.2f);
-        character.StartRun(dungeon, startRoom, finalRoom, Win, Lose);
-        started = true;
+        character.transform.DOScale(Vector3.one, 0.2f).OnComplete(StartRun);
+
+        void StartRun()
+        {
+            character.StartRun(dungeon, startRoom, finalRoom, Win, Lose);
+            started = true;
+        }
+        
     }
 
     void Win()

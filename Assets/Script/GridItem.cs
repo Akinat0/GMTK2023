@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Lean.Touch;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public enum Direction
 {
@@ -70,13 +71,19 @@ public class GridItem : MonoBehaviour
         
         GetComponent<LeanDragTranslateAlong>().ScreenDepth.Object = Grid.Plane;
 
+        transform.DOComplete();
+        transform.DOPunchScale(Vector3.one * -0.2f, 0.4f, 0);
         SoundManager.PlaySound("drop");
     }
 
     public void DetachItem()
     {
+        if (!IsOnGrid)
+            return;
+
         IsOnGrid = false;
         SoundManager.PlaySound("pick");
+        transform.DOPunchScale(Vector3.one * 0.3f, 0.4f, 0);
     }
     
     public GridItem GetNeighbour(Direction direction)

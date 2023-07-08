@@ -49,7 +49,7 @@ MonoBehaviour:
   firstColor: {r: 0.28627452, g: 0.41176474, b: 0.5137255, a: 1}
   secondColor: {r: 0.20000002, g: 0.26666668, b: 0.3372549, a: 1}
   hoverColor: {r: 1, g: 1, b: 1, a: 0.19607843}
-  blockedColor: {r: 1, g: 0, b: 0, a: 1}
+  blockedColor: {r: 0.6117647, g: 0.21176472, b: 0.26666668, a: 0.5882353}
   renderer: {fileID: 6370570670276054236}
 --- !u!61 &5469068703727634334
 BoxCollider2D:

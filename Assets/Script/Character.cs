@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 
@@ -100,7 +101,11 @@ public class Character : MonoBehaviour
         }
 
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(transform.DOMove(room.transform.position, 0.5f)).OnComplete(NextRoom);
+        sequence
+            .Append(transform.DOMove(room.transform.position, 0.5f))
+            .Join(transform.DOPunchScale(Vector3.one * 0.3f, 0.5f, 0))
+            .OnComplete(NextRoom);
+       
     }
     
 }
