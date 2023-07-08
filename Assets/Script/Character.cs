@@ -105,6 +105,8 @@ public class Character : MonoBehaviour
             .Append(transform.DOMove(room.transform.position, 0.5f))
             .Join(transform.DOPunchScale(Vector3.one * 0.3f, 0.5f, 0))
             .OnComplete(NextRoom);
+
+        SoundManager.PlaySound("walk");
        
     }
     
