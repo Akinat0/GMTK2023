@@ -472,7 +472,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -480,6 +480,48 @@ TextureImporter:
       bones: []
       spriteID: 8f9306b8f54cb491d89f54d7c87b4c39
       internalID: 1429106066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 123_18
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 10
+        width: 43
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e89f1d572ee5447583832eeeac7aae2
+      internalID: 1209871906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 123_19
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 29
+        width: 43
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eab82d55e91dd46b7aadaa5d2bede2ec
+      internalID: 264105969
       vertices: []
       indices: 
       edges: []
@@ -505,6 +547,8 @@ TextureImporter:
       123_15: -1757863518
       123_16: -368118871
       123_17: 1429106066
+      123_18: 1209871906
+      123_19: 264105969
       123_2: 1075957903
       123_3: 1094138414
       123_4: 1980801339
