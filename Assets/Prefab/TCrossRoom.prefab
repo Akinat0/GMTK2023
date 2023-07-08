@@ -210,7 +210,7 @@ MonoBehaviour:
   entersCount: 1
   exitsCount: 2
   paramsContainer:
-    Hp: -10
+    Hp: -1
 --- !u!114 &1093239049926344644
 MonoBehaviour:
   m_ObjectHideFlags: 0

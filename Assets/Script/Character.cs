@@ -70,27 +70,21 @@ public class Character : MonoBehaviour
             {
                 GridItem backRoom;
 
-                do
+            
+                backRoom = history.Peek();
+
+                foreach (var direction in GridItem.Neighbours)
                 {
-                    backRoom = history.Peek();
+                    exits.Clear();
 
-                    foreach (var direction in GridItem.Neighbours)
-                    {
-                        exits.Clear();
+                    var neighbour = backRoom.GetNeighbour(direction);
 
-                        var neighbour = backRoom.GetNeighbour(direction);
+                    if (neighbour != null && !visitedGrids.Contains(neighbour))
+                        exits.Add(neighbour);
+                }
 
-                        if (neighbour != null && !visitedGrids.Contains(neighbour))
-                            exits.Add(neighbour);
-                    }
-
-                    if (exits.Count > 0)
-                        break;
-
-                    history.Pop();
-
-                } while (exits.Count == 0);
-
+                if (exits.Count == 0)
+                    exits.Add(history.Pop());
             }
             else
             {

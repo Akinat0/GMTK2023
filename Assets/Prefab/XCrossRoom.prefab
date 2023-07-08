@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b281b91a70a624a0da1c43adc1c30c7b, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.83348227, a: 1}
+  m_Color: {r: 0.06132078, g: 0.19609049, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 8105644386349387065}
   - component: {fileID: 1093239049926344644}
   m_Layer: 0
-  m_Name: Room
+  m_Name: XCrossRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entersCount: 1
-  exitsCount: 1
+  exitsCount: 3
   paramsContainer:
     Hp: -1
 --- !u!114 &1093239049926344644
