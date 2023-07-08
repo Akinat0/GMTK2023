@@ -43,4 +43,25 @@ public struct DungeonMultiplierOperation
                 break;
         }
     }
+
+    public override string ToString()
+    {
+        switch (operation)
+        {
+            case Operation.Add:
+                return $"+{value}";
+            case Operation.Subtract:
+                return $"-{value}";
+            case Operation.Multiply:
+                return $"x{value}";
+            case Operation.Divide:
+                return $"/{value}";
+            case Operation.Power:
+                return $"^{value}";
+            case Operation.Sqrt:
+                return $"√";
+        }
+
+        return string.Empty;
+    }
 }

@@ -33,9 +33,14 @@ public class GameScene : MonoBehaviour
         Grid.Build(levelConfig.FieldSize.x, levelConfig.FieldSize.y);
         
         PlaceItem(startRoom = Instantiate(levelConfig.StartRoom));
-        
-        foreach (var tilePrefab in levelConfig.AllowedTiles)
-            PlaceItem(Instantiate(tilePrefab));
+
+        foreach (var tileEntrance in levelConfig.AllowedTiles)
+        {
+            GridItem item = Instantiate(tileEntrance.item);
+            item.DungeonOperation = tileEntrance.operation; 
+            item.Params = tileEntrance.paramsContainer; 
+            PlaceItem(item);
+        }
 
         PlaceItem(finalRoom = Instantiate(levelConfig.FinalRoom));
     }

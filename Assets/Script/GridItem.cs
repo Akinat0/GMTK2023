@@ -27,9 +27,17 @@ public class GridItem : MonoBehaviour
 
     public bool IsOnGrid { get; private set; }
 
-    public ParamsContainer Params => paramsContainer;
+    public ParamsContainer Params
+    {
+        get => paramsContainer;
+        set => paramsContainer = value;
+    }
 
-    public DungeonMultiplierOperation DungeonOperation => dungeonOperation;
+    public DungeonMultiplierOperation DungeonOperation
+    {
+        get => dungeonOperation;
+        set => dungeonOperation = value;
+    }
 
     public bool IsValid
     {
