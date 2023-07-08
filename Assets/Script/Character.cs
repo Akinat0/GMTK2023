@@ -7,21 +7,21 @@ using Random = UnityEngine.Random;
 
 public class Character : MonoBehaviour
 {
-    [SerializeField] ParamsContainer paramsContainer;
+    public ParamsContainer paramsContainer;
     
     public ParamsContainer runtimeParamsContainer;
 
     Action OnSuccess { get; set; }
     Action OnFail { get; set; }
-
-    GridController Grid { get; set; }
-
+    
     readonly HashSet<GridItem> visitedGrids = new HashSet<GridItem>();
     readonly Stack<GridItem> history = new Stack<GridItem>();
 
     GridItem LastRoom { get; set; }
 
-    public void StartRun(GridController grid, GridItem startRoom, GridItem lastRoom, Action onSuccess, Action onFail)
+    Dungeon Dungeon { get; set; }
+
+    public void StartRun(Dungeon dungeon, GridItem startRoom, GridItem lastRoom, Action onSuccess, Action onFail)
     {
         history.Clear();
         visitedGrids.Clear();
@@ -30,6 +30,8 @@ public class Character : MonoBehaviour
         OnFail = onFail;
 
         LastRoom = lastRoom;
+        Dungeon = dungeon;
+
 
         runtimeParamsContainer = new ParamsContainer(paramsContainer); 
         
@@ -41,8 +43,9 @@ public class Character : MonoBehaviour
         void NextRoom()
         {
             visitedGrids.Add(room);
-
-            runtimeParamsContainer.Apply(room.Params);
+            
+            room.DungeonOperation.Apply(Dungeon);
+            runtimeParamsContainer.Apply(room.Params, Dungeon);
 
             if (runtimeParamsContainer.Hp <= 0)
             {

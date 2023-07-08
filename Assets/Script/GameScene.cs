@@ -16,11 +16,14 @@ public class GameScene : MonoBehaviour
     GridItem finalRoom;
 
     Character character;
+
+    Dungeon dungeon;
     
     public static GridController Grid => Instance != null ? Instance.grid : null;
 
     //UI DISPLAY
     [SerializeField] TextMeshProUGUI displayHp, displayLvl;
+    [SerializeField] TextMeshProUGUI multiplierField;
     [SerializeField] Slider sliderHp, sliderExp;
     bool started;
 
@@ -42,17 +45,12 @@ public class GameScene : MonoBehaviour
         if (started)
         {
             displayHp.text = "HP:" + character.runtimeParamsContainer.Hp;
-            sliderHp.value = (float)character.runtimeParamsContainer.Hp/10;
+            sliderHp.value = character.runtimeParamsContainer.Hp/character.paramsContainer.Hp;
 
             displayLvl.text = "LVL:" + character.runtimeParamsContainer.Lvl;
             sliderExp.value = (float)character.runtimeParamsContainer.Exp / 10;
 
-            if (character.runtimeParamsContainer.Exp > 10)
-            {
-                character.runtimeParamsContainer.Lvl++;
-                character.runtimeParamsContainer.Exp = 0;
-                character.runtimeParamsContainer.Hp *= 2; // change here to max hp
-            }
+            multiplierField.text = $"X{dungeon.Multiplier}";
         }
     }
 
@@ -89,13 +87,15 @@ public class GameScene : MonoBehaviour
         if(hasNotValid)
             return;
 
+        dungeon = new Dungeon();
+        
         character = character ? character : Instantiate(characterPrefab);
         character.transform.DOComplete();
         character.transform.DOKill();
         character.transform.position = startRoom.transform.position;
         character.transform.localScale = Vector3.zero;
         character.transform.DOScale(Vector3.one, 0.2f);
-        character.StartRun(grid, startRoom, finalRoom, Win, Lose);
+        character.StartRun(dungeon, startRoom, finalRoom, Win, Lose);
         started = true;
     }
 

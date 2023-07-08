@@ -12,13 +12,13 @@ public class ParamsContainer
     }
     
     [SerializeField]
-    public int Hp;
+    public float Hp;
     public int Lvl;
     public int Exp;
 
-    public void Apply(ParamsContainer container)
+    public void Apply(ParamsContainer container, Dungeon dungeon)
     {
-        Hp += container.Hp;
+        Hp += container.Hp * dungeon.Multiplier;
         Exp += container.Exp;
     }
 }

@@ -20,6 +20,7 @@ public class GridItem : MonoBehaviour
     [SerializeField] int entersCount;
     [SerializeField] int exitsCount;
     [SerializeField] ParamsContainer paramsContainer;
+    [SerializeField] DungeonMultiplierOperation dungeonOperation;
 
     public int X { get; set; }
     public int Y { get; set; }
@@ -27,6 +28,8 @@ public class GridItem : MonoBehaviour
     public bool IsOnGrid { get; private set; }
 
     public ParamsContainer Params => paramsContainer;
+
+    public DungeonMultiplierOperation DungeonOperation => dungeonOperation;
 
     public bool IsValid
     {
