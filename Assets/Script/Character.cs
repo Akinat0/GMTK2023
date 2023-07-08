@@ -9,7 +9,7 @@ public class Character : MonoBehaviour
 {
     [SerializeField] ParamsContainer paramsContainer;
     
-    ParamsContainer runtimeParamsContainer;
+    public ParamsContainer runtimeParamsContainer;
 
     Action OnSuccess { get; set; }
     Action OnFail { get; set; }

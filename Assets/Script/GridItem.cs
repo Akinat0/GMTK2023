@@ -58,11 +58,14 @@ public class GridItem : MonoBehaviour
         Y = y;
         
         GetComponent<LeanDragTranslateAlong>().ScreenDepth.Object = Grid.Plane;
+
+        SoundManager.PlaySound("drop");
     }
 
     public void DetachItem()
     {
         IsOnGrid = false;
+        SoundManager.PlaySound("pick");
     }
     
     public GridItem GetNeighbour(Direction direction)

@@ -1,6 +1,8 @@
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class GameScene : MonoBehaviour
 {
@@ -17,6 +19,11 @@ public class GameScene : MonoBehaviour
     
     public static GridController Grid => Instance != null ? Instance.grid : null;
 
+    //UI DISPLAY
+    [SerializeField] TextMeshProUGUI displayHp, displayLvl;
+    [SerializeField] Slider sliderHp, sliderExp;
+    bool started;
+
     void Start()
     {
         Instance = this;
@@ -28,6 +35,25 @@ public class GameScene : MonoBehaviour
             PlaceItem(Instantiate(tilePrefab));
 
         PlaceItem(finalRoom = Instantiate(levelConfig.FinalRoom));
+    }
+
+    private void Update()
+    {
+        if (started)
+        {
+            displayHp.text = "HP:" + character.runtimeParamsContainer.Hp;
+            sliderHp.value = (float)character.runtimeParamsContainer.Hp/10;
+
+            displayLvl.text = "LVL:" + character.runtimeParamsContainer.Lvl;
+            sliderExp.value = (float)character.runtimeParamsContainer.Exp / 10;
+
+            if (character.runtimeParamsContainer.Exp > 10)
+            {
+                character.runtimeParamsContainer.Lvl++;
+                character.runtimeParamsContainer.Exp = 0;
+                character.runtimeParamsContainer.Hp *= 2; // change here to max hp
+            }
+        }
     }
 
     void PlaceItem(GridItem item)
@@ -70,6 +96,7 @@ public class GameScene : MonoBehaviour
         character.transform.localScale = Vector3.zero;
         character.transform.DOScale(Vector3.one, 0.2f);
         character.StartRun(grid, startRoom, finalRoom, Win, Lose);
+        started = true;
     }
 
     void Win()
