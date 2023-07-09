@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1455312958878512648}
   - component: {fileID: 4613232395399215312}
   - component: {fileID: -5948937495136553532}
+  - component: {fileID: 6235991703646421814}
   m_Layer: 0
   m_Name: Room_Heal
   m_TagString: Untagged
@@ -184,6 +185,23 @@ MonoBehaviour:
   sprite0101: {fileID: -2139438995, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   sprite0111: {fileID: 1075957903, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   sprite1111: {fileID: 1397604557, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+--- !u!114 &6235991703646421814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204852116831522813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d79a7ea702443dab2772251ca14d635, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderers:
+  - {fileID: 5317291632610467281}
+  - {fileID: 5904319710796910673}
+  textRenderers: []
+  contentRenderer: {fileID: 6565811088095385965}
 --- !u!1 &6565811088095385965
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3769343221158597415}
   - component: {fileID: 2540307169365246315}
   - component: {fileID: 3669068431455619649}
+  - component: {fileID: -8687846613667272415}
   m_Layer: 0
   m_Name: Room 4
   m_TagString: Untagged
@@ -184,6 +185,23 @@ MonoBehaviour:
   sprite0101: {fileID: -2139438995, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   sprite0111: {fileID: 1075957903, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   sprite1111: {fileID: 1397604557, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+--- !u!114 &-8687846613667272415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3240902113540599037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d79a7ea702443dab2772251ca14d635, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderers:
+  - {fileID: 5786758787162839636}
+  - {fileID: 2686296422785377305}
+  textRenderers: []
+  contentRenderer: {fileID: 5647209589099441426}
 --- !u!1 &3240902782606596247
 GameObject:
   m_ObjectHideFlags: 0

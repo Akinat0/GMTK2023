@@ -41,6 +41,7 @@ public class Character : MonoBehaviour
         void NextRoom()
         {
             visitedGrids.Add(room);
+            room.DisableItemContent();
             
             room.DungeonOperation.Apply(Dungeon);
             runtimeParamsContainer.Apply(room.Params, Dungeon);

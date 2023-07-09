@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 8105644386349387065}
   - component: {fileID: 1093239049926344644}
   - component: {fileID: 8615022195380908015}
+  - component: {fileID: 5127758556399342536}
   m_Layer: 0
   m_Name: StartRoom
   m_TagString: Untagged
@@ -267,3 +268,19 @@ MonoBehaviour:
   sprite0101: {fileID: -2139438995, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   sprite0111: {fileID: 1075957903, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   sprite1111: {fileID: 1397604557, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+--- !u!114 &5127758556399342536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2804154231605173174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d79a7ea702443dab2772251ca14d635, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderers:
+  - {fileID: 8488301848957717169}
+  textRenderers: []
+  contentRenderer: {fileID: 0}

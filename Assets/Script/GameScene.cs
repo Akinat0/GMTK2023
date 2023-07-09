@@ -47,7 +47,7 @@ public class GameScene : MonoBehaviour
     {
         if (started)
         {
-            displayHp.text = $"HP:{character.runtimeParamsContainer.Hp:#.##}";
+            displayHp.text = $"HP:{character.runtimeParamsContainer.Hp:#.#}";
             sliderHp.value = character.runtimeParamsContainer.Hp/character.paramsContainer.Hp;
 
             displayLvl.text = "LVL:" + character.runtimeParamsContainer.Lvl;
@@ -90,6 +90,9 @@ public class GameScene : MonoBehaviour
         
         if(hasNotValid)
             return;
+
+        foreach (var item in Grid.Items.Where(item => item != null))
+            item.ResetItem();
 
         dungeon = new Dungeon();
 

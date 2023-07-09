@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 5021410793319720287}
   - component: {fileID: 3280857273635519308}
   - component: {fileID: -6417802803606926094}
+  - component: {fileID: -6412181343229142571}
   m_Layer: 0
   m_Name: RoomDungeonModifier
   m_TagString: Untagged
@@ -455,3 +456,20 @@ MonoBehaviour:
   sprite0101: {fileID: -2139438995, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   sprite0111: {fileID: 1075957903, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   sprite1111: {fileID: 1397604557, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+--- !u!114 &-6412181343229142571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882681449055069473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d79a7ea702443dab2772251ca14d635, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderers:
+  - {fileID: 4314888415826823322}
+  textRenderers:
+  - {fileID: 4947218198568120149}
+  contentRenderer: {fileID: 1825082108399746583}

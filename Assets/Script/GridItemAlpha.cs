@@ -29,16 +29,21 @@ public class GridItemAlpha : MonoBehaviour
 
     public void SetContentAlpha(float alpha)
     {
+        if(contentRenderer == null)
+            return;
+        
         if (contentRenderer.TryGetComponent(out SpriteRenderer spriteRenderer))
         {
             var color = spriteRenderer.color;
             color.a = alpha;
             spriteRenderer.color = color;
-        }else if (contentRenderer.TryGetComponent(out TextMeshPro textRenderer))
-        {
-            
         }
-            
+        else if (contentRenderer.TryGetComponent(out TextMeshPro textRenderer))
+        {
+            var color = textRenderer.color;
+            color.a = alpha;
+            textRenderer.color = color;
+        }
     }
     
 }

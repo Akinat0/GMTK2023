@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using Lean.Touch;
 using UnityEngine;
@@ -23,6 +24,10 @@ public class GridItem : MonoBehaviour
     GridItemPortals gridItemPortals;
 
     GridItemPortals GridItemPortals => gridItemPortals ? gridItemPortals : gridItemPortals = GetComponent<GridItemPortals>();
+
+    GridItemAlpha gridItemAlpha;
+    GridItemAlpha GridItemAlpha => gridItemAlpha ? gridItemAlpha : gridItemAlpha = GetComponent<GridItemAlpha>();
+    
 
     public int X { get; set; }
     public int Y { get; set; }
@@ -127,11 +132,17 @@ public class GridItem : MonoBehaviour
     
     void OnSelectedFingerHandler(LeanFinger finger)
     {
+        if(GridItemAlpha != null)
+            GridItemAlpha.SetAlpha(0.4f);
+        
         Grid.DetachItem(X, Y); //detach this
     }
 
     void OnSelectedFingerUpHandler(LeanFinger finger)
     {
+        if(GridItemAlpha != null)
+            GridItemAlpha.SetAlpha(1);
+        
         if (!Grid.TryGetCellCoordinates(transform.position, out int x, out int y)
             || !Grid.TryPlaceItem(this, x, y))
         {
@@ -139,6 +150,18 @@ public class GridItem : MonoBehaviour
         }
     }
 
+    public void DisableItemContent()
+    {
+        if(GridItemAlpha != null)
+            GridItemAlpha.SetContentAlpha(0.3f);
+    }
+
+    public void ResetItem()
+    {
+        if(GridItemAlpha != null)
+            GridItemAlpha.SetContentAlpha(1);
+    }
+    
     public virtual void Destroy()
     {
         Grid.DetachItem(X, Y);
