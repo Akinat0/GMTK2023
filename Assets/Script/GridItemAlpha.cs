@@ -8,7 +8,6 @@ public class GridItemAlpha : MonoBehaviour
     [SerializeField] SpriteRenderer[] spriteRenderers;
     [SerializeField] TextMeshPro[] textRenderers;
     [SerializeField] GameObject contentRenderer;
-    [SerializeField] Color red;
 
     public void SetAlpha(float alpha)
     {
@@ -48,25 +47,5 @@ public class GridItemAlpha : MonoBehaviour
         }
     }
 
-    public void SetColor()
-    {
-        StartCoroutine("setColor");
-    }
-
-    IEnumerator setColor()
-    {
-        foreach (var spriteRenderer in spriteRenderers)
-        {
-            var color = red;
-            spriteRenderer.color = color;
-        }
-
-        yield return new WaitForSeconds(0.2f);
-
-        foreach (var spriteRenderer in spriteRenderers)
-        {
-            spriteRenderer.color = Color.white;
-        }
-    }
 
 }

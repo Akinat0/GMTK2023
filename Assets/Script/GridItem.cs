@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using DG.Tweening;
 using Lean.Touch;
 using UnityEngine;
@@ -46,6 +47,8 @@ public class GridItem : MonoBehaviour
         set => dungeonOperation = value;
     }
 
+    public bool IsRed { get; set; }
+
     [SerializeField]
     int portalsCount;
     
@@ -63,6 +66,9 @@ public class GridItem : MonoBehaviour
     {
         get
         {
+            if (IsRed && Neighbours.Select(GetNeighbour).Any(neighbour => neighbour != null && neighbour.IsRed))
+                return false;
+                
             int counter = 0;
             
             foreach (var neighbour in Neighbours)
@@ -121,10 +127,9 @@ public class GridItem : MonoBehaviour
     
     void Update()
     {
-        bool isEnabled = 
-            !GameScene.Instance.started 
-            && GameScene.Instance.character 
-            && GameScene.Instance.character.ActiveRoom != this;
+        bool isEnabled =
+            !GameScene.Instance.started
+            && (GameScene.Instance.character == null || GameScene.Instance.character.ActiveRoom != this);
         
         GetComponent<LeanDragTranslateAlong>().enabled = isEnabled;
         GetComponent<LeanSelectableByFinger>().enabled = isEnabled;
@@ -192,7 +197,6 @@ public class GridItem : MonoBehaviour
     
     public void MarkAsNotValid()
     {
-        GridItemAlpha.SetColor();
         SoundManager.PlaySound("wrong"); //fix activating all at same time
         transform.DOComplete();
         transform.DOPunchScale(Vector3.one * 0.3f, 1, 5);

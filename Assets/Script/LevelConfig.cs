@@ -13,6 +13,7 @@ public class LevelConfig : ScriptableObject
         public DungeonMultiplierOperation operation;
         public ParamsContainer paramsContainer;
         public int portalsCount = 2;
+        public bool isRed;
     }
 
     [SerializeField] Vector2Int fieldSize;

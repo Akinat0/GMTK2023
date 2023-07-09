@@ -43,6 +43,7 @@ public class GameScene : MonoBehaviour
             GridItem item = Instantiate(tileEntrance.item);
             item.DungeonOperation = tileEntrance.operation; 
             item.Params = tileEntrance.paramsContainer;
+            item.IsRed = tileEntrance.isRed;
             PlaceItem(item);
             item.PortalsCount = tileEntrance.portalsCount;
         }

@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 675c3aa265e74897a5942bdf8527846f, type: 3}
+  m_Name: LevelConfig 3
+  m_EditorClassIdentifier: 
+  fieldSize: {x: 20, y: 20}
+  allowedTiles:
+  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
+    operation:
+      operation: 1
+      value: 2
+    paramsContainer:
+      Hp: 0
+      Lvl: 0
+      Exp: 0
+    portalsCount: 4
+    isRed: 0
+  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
+    operation:
+      operation: 6
+      value: 0
+    paramsContainer:
+      Hp: 0
+      Lvl: 0
+      Exp: 0
+    portalsCount: 1
+    isRed: 0
+  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
+    operation:
+      operation: 6
+      value: 0
+    paramsContainer:
+      Hp: 0
+      Lvl: 0
+      Exp: 0
+    portalsCount: 1
+    isRed: 0
+  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
+    operation:
+      operation: 6
+      value: 0
+    paramsContainer:
+      Hp: 0
+      Lvl: 0
+      Exp: 0
+    portalsCount: 1
+    isRed: 0
+  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
+    operation:
+      operation: 6
+      value: 0
+    paramsContainer:
+      Hp: 0
+      Lvl: 0
+      Exp: 0
+    portalsCount: 1
+    isRed: 0
+  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
+    operation:
+      operation: 6
+      value: 0
+    paramsContainer:
+      Hp: 0
+      Lvl: 0
+      Exp: 0
+    portalsCount: 1
+    isRed: 0
+  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
+    operation:
+      operation: 6
+      value: 0
+    paramsContainer:
+      Hp: 0
+      Lvl: 0
+      Exp: 0
+    portalsCount: 1
+    isRed: 0

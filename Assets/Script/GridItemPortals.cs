@@ -24,29 +24,10 @@ public class GridItemPortals : MonoBehaviour
             if (item.GetNeighbour(direction) != null)
             {
                 var fakedDir = direction;
-                
-                
-                //hack
-                // if (direction == Direction.Bottom)
-                //     fakedDir = Direction.Top;
-                // else if (direction == Direction.Top)
-                //     fakedDir = Direction.Bottom;
-                
+
                 portals.Add(fakedDir);
             }
         }
-        
-        
-        
-        // for (int i = 0; i < Mathf.Min(item.PortalsCount, 4); i++)
-        // {
-        //     var direction = GridItem.Neighbours[i];
-        //     
-        //     if (item.GetNeighbour(direction) != null)
-        //     {
-        //         portals.Add(direction);
-        //     }
-        // }
 
         Sprite sprite = null;
 
@@ -86,5 +67,6 @@ public class GridItemPortals : MonoBehaviour
 
         spriteRenderer.sprite = sprite;
         spriteRenderer.transform.rotation = rotation;
+        spriteRenderer.color = item.IsRed ? new Color(0.84f, 0.34f, 0.26f) : new Color(0.58f, 0.72f, 0.35f);
     }
 }
