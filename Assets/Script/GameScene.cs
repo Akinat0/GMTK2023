@@ -109,7 +109,6 @@ public class GameScene : MonoBehaviour
             character.StartRun(dungeon, startRoom, Win, Lose);
             started = true;
         }
-        
     }
 
     void Win()
