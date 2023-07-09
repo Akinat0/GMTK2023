@@ -27,10 +27,10 @@ public class GridItemPortals : MonoBehaviour
                 
                 
                 //hack
-                if (direction == Direction.Bottom)
-                    fakedDir = Direction.Top;
-                else if (direction == Direction.Top)
-                    fakedDir = Direction.Bottom;
+                // if (direction == Direction.Bottom)
+                //     fakedDir = Direction.Top;
+                // else if (direction == Direction.Top)
+                //     fakedDir = Direction.Bottom;
                 
                 portals.Add(fakedDir);
             }
@@ -60,7 +60,19 @@ public class GridItemPortals : MonoBehaviour
                 sprite = sprite0001;
                 break;
             case 2:
-                bool isTurn = portals.Count == 2 && Mathf.Abs((int)portals[0] - (int)portals[1]) == 1;
+
+                bool isTurn = false;
+                
+                if (portals.Count == 2)
+                {
+                    int distance = Mathf.Abs((int)portals[0] - (int)portals[1]);
+                    isTurn = distance is 1 or 3;
+
+                    if (distance == 3 && portals[0] == Direction.Top)
+                    {
+                        rotation = Quaternion.Euler(0, 0, -90);
+                    }
+                }
                 
                 sprite = isTurn ? sprite0011 : sprite0101;
                 break;

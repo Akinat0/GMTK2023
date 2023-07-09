@@ -33,7 +33,7 @@ MonoBehaviour:
       Hp: 0
       Lvl: 0
       Exp: 0
-    portalsCount: 2
+    portalsCount: 3
   - item: {fileID: 2048240960091667995, guid: 8d3cc6017918a4486832e40fe2adbbf2, type: 3}
     operation:
       operation: 0
@@ -42,13 +42,49 @@ MonoBehaviour:
       Hp: -1
       Lvl: 0
       Exp: 0
-    portalsCount: 2
+    portalsCount: 3
   - item: {fileID: 3654477504784723246, guid: 41d44934a8d71482ebc67dce0b97f780, type: 3}
     operation:
       operation: 0
       value: 0
     paramsContainer:
       Hp: -2
+      Lvl: 0
+      Exp: 0
+    portalsCount: 2
+  - item: {fileID: 1455312958878512648, guid: 44ada128f3376413891cb5677b95ae62, type: 3}
+    operation:
+      operation: 0
+      value: 0
+    paramsContainer:
+      Hp: 10
+      Lvl: 0
+      Exp: 0
+    portalsCount: 2
+  - item: {fileID: 1455312958878512648, guid: 44ada128f3376413891cb5677b95ae62, type: 3}
+    operation:
+      operation: 0
+      value: 0
+    paramsContainer:
+      Hp: 10
+      Lvl: 0
+      Exp: 0
+    portalsCount: 2
+  - item: {fileID: 1455312958878512648, guid: 44ada128f3376413891cb5677b95ae62, type: 3}
+    operation:
+      operation: 0
+      value: 0
+    paramsContainer:
+      Hp: 10
+      Lvl: 0
+      Exp: 0
+    portalsCount: 2
+  - item: {fileID: 1455312958878512648, guid: 44ada128f3376413891cb5677b95ae62, type: 3}
+    operation:
+      operation: 0
+      value: 0
+    paramsContainer:
+      Hp: 10
       Lvl: 0
       Exp: 0
     portalsCount: 2

@@ -80,6 +80,8 @@ public class GridController : MonoBehaviour
         item.AttachItem(this, x, y);
         
         items[GetCellIndex(x, y)] = item;
+        
+        UpdateItemPortals(item);
 
         TryGetCellPosition(x, y, out Vector3 pos);
 
@@ -88,6 +90,21 @@ public class GridController : MonoBehaviour
         return true;
     }
 
+    void UpdateItemPortals(GridItem item)
+    {
+        //Update items after item added to the grid
+        item.UpdatePortals();
+
+        foreach (var direction in GridItem.Neighbours)
+        {
+            var neighbour = item.GetNeighbour(direction);
+            
+            if(neighbour != null)
+                neighbour.UpdatePortals();
+        }
+        //
+    }
+    
     public bool TryGetCellCoordinates(Vector3 pos, out int x, out int y)
     {
         x = (int) (pos.x / cellSize + cellSize / 2);

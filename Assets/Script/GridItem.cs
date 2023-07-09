@@ -5,9 +5,9 @@ using UnityEngine;
 public enum Direction
 {
     None = -1,
-    Bottom = 0,
+    Top = 0,
     Right = 1, 
-    Top = 2, 
+    Bottom = 2, 
     Left = 3
 }
 
@@ -15,7 +15,7 @@ public enum Direction
 [RequireComponent(typeof(LeanDragTranslateAlong), typeof(LeanSelectableByFinger))]
 public class GridItem : MonoBehaviour
 {
-    public static Direction[] Neighbours = new[] { Direction.Bottom, Direction.Right, Direction.Top, Direction.Left };
+    public static Direction[] Neighbours = new[] { Direction.Top, Direction.Right, Direction.Bottom, Direction.Left };
     
     [SerializeField] ParamsContainer paramsContainer;
     [SerializeField] DungeonMultiplierOperation dungeonOperation;
@@ -87,17 +87,7 @@ public class GridItem : MonoBehaviour
 
         transform.DOComplete();
         transform.DOPunchScale(Vector3.one * -0.2f, 0.4f, 0);
-        
-        UpdatePortals();
 
-        foreach (var direction in Neighbours)
-        {
-            var neighbour = GetNeighbour(direction);
-            
-            if(neighbour != null)
-                neighbour.UpdatePortals();
-        }
-        
         SoundManager.PlaySound("drop");
     }
 
@@ -172,7 +162,7 @@ public class GridItem : MonoBehaviour
         transform.DOPunchScale(Vector3.one * 0.3f, 1, 5);
     }
 
-    void UpdatePortals()
+    public void UpdatePortals()
     {
         if(GridItemPortals != null)
             GridItemPortals.UpdatePortals();
