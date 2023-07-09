@@ -26,16 +26,16 @@ Material:
     m_Ints: []
     m_Floats:
     - _BottomCS: 0.5920139
-    - _Brightness: 1.7085158
-    - _FrameCorners: 0.14
-    - _ScanlineDensity: 270
+    - _Brightness: 2.4
+    - _FrameCorners: 0.061
+    - _ScanlineDensity: 5
     - _ScanlineLines: 232.2
-    - _ScanlineStrength: 0.136
-    - _SpherizeStrength: 0.31
-    - _SubpixelStrength: 0.315
-    - _SubpixelStripes: 223.9
+    - _ScanlineStrength: 0.043
+    - _SpherizeStrength: 0
+    - _SubpixelStrength: 0.3
+    - _SubpixelStripes: 450
     m_Colors:
-    - _BordersCS: {r: 0.97117877, g: 0.5483593, b: 0, a: 0}
-    - _FrameColor: {r: 0.24705882, g: 0.24705882, b: 0.3882353, a: 1}
+    - _BordersCS: {r: 0, g: 1, b: 0, a: 1}
+    - _FrameColor: {r: 0.33361515, g: 0.4774631, b: 0.5943396, a: 1}
     - _MainTex: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
