@@ -2446,6 +2446,8 @@ MonoBehaviour:
   levelConfig:
   - {fileID: 11400000, guid: 4433e6f3b08cb40bbb43bf592e535ee5, type: 2}
   - {fileID: 11400000, guid: 9268c0349919243afb9688adf6af0cd1, type: 2}
+  - {fileID: 11400000, guid: 4db6ff8a4135a4fe59d96df09f1563bb, type: 2}
+  - {fileID: 11400000, guid: 6a78e14582cfb4e40bbe0964f67fe294, type: 2}
   cameraConstraint: {fileID: 519420034}
   character: {fileID: 0}
   displayHp: {fileID: 470218559}
@@ -3231,7 +3233,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -14.929993, y: 10}
+  m_AnchoredPosition: {x: -14.929932, y: 10}
   m_SizeDelta: {x: -90.08, y: 15}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1113767491
@@ -4969,7 +4971,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 270}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1012.89, y: -529.6}
+  m_AnchoredPosition: {x: -1012.89, y: -529.5999}
   m_SizeDelta: {x: 20, y: 1422.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1922330285
