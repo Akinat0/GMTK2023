@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: LevelConfig
   m_EditorClassIdentifier: 
   fieldSize: {x: 10, y: 10}
-  startRoom: {fileID: 8105644386349387065, guid: 61b0679a02a8941519cbfaab90f0cda0, type: 3}
-  finalRoom: {fileID: 8105644386349387065, guid: b1fec8bc8649841f5b913db20f009980, type: 3}
   allowedTiles:
   - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
     operation:
@@ -42,7 +40,7 @@ MonoBehaviour:
       Hp: -1
       Lvl: 0
       Exp: 0
-    portalsCount: 3
+    portalsCount: 2
   - item: {fileID: 3654477504784723246, guid: 41d44934a8d71482ebc67dce0b97f780, type: 3}
     operation:
       operation: 0
@@ -97,3 +95,30 @@ MonoBehaviour:
       Lvl: 0
       Exp: 0
     portalsCount: 2
+  - item: {fileID: 8105644386349387065, guid: 61b0679a02a8941519cbfaab90f0cda0, type: 3}
+    operation:
+      operation: 0
+      value: 0
+    paramsContainer:
+      Hp: 10
+      Lvl: 0
+      Exp: 0
+    portalsCount: 1
+  - item: {fileID: 8105644386349387065, guid: 61b0679a02a8941519cbfaab90f0cda0, type: 3}
+    operation:
+      operation: 0
+      value: 0
+    paramsContainer:
+      Hp: 10
+      Lvl: 0
+      Exp: 0
+    portalsCount: 1
+  - item: {fileID: 8105644386349387065, guid: 61b0679a02a8941519cbfaab90f0cda0, type: 3}
+    operation:
+      operation: 0
+      value: 0
+    paramsContainer:
+      Hp: 10
+      Lvl: 0
+      Exp: 0
+    portalsCount: 1
