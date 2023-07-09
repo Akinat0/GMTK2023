@@ -17,19 +17,16 @@ public class Character : MonoBehaviour
     readonly HashSet<GridItem> visitedGrids = new ();
     readonly Stack<GridItem> history = new ();
 
-    GridItem LastRoom { get; set; }
-
     Dungeon Dungeon { get; set; }
 
-    public void StartRun(Dungeon dungeon, GridItem startRoom, GridItem lastRoom, Action onSuccess, Action onFail)
+    public void StartRun(Dungeon dungeon, GridItem startRoom, Action onSuccess, Action onFail)
     {
         history.Clear();
         visitedGrids.Clear();
         
         OnSuccess = onSuccess;
         OnFail = onFail;
-
-        LastRoom = lastRoom;
+        
         Dungeon = dungeon;
 
 
@@ -53,7 +50,7 @@ public class Character : MonoBehaviour
                 return;
             }
             
-            if (room == LastRoom)
+            if (room.PortalsCount == 1)
             {
                 OnSuccess?.Invoke();
                 return;

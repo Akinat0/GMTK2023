@@ -12,9 +12,6 @@ public class GameScene : MonoBehaviour
     [SerializeField] Character characterPrefab;
     [SerializeField] LevelConfig levelConfig;
 
-    GridItem startRoom;
-    GridItem finalRoom;
-
     Character character;
 
     Dungeon dungeon;
@@ -31,10 +28,7 @@ public class GameScene : MonoBehaviour
     {
         Instance = this;
         Grid.Build(levelConfig.FieldSize.x, levelConfig.FieldSize.y);
-        
-        PlaceItem(startRoom = Instantiate(levelConfig.StartRoom));
-        startRoom.PortalsCount = 1;
-        
+
         foreach (var tileEntrance in levelConfig.AllowedTiles)
         {
             GridItem item = Instantiate(tileEntrance.item);
@@ -43,9 +37,6 @@ public class GameScene : MonoBehaviour
             PlaceItem(item);
             item.PortalsCount = tileEntrance.portalsCount;
         }
-
-        PlaceItem(finalRoom = Instantiate(levelConfig.FinalRoom));
-        finalRoom.PortalsCount = 1;
     }
 
     private void Update()
@@ -96,16 +87,21 @@ public class GameScene : MonoBehaviour
             return;
 
         dungeon = new Dungeon();
+
+        var startRooms = Grid.Items.Where(item => item.PortalsCount == 1).ToArray();
+
+        GridItem startRoom = startRooms[Random.Range(0, startRooms.Length)]; 
         
         character = character ? character : Instantiate(characterPrefab);
         character.transform.DOComplete();
+        
         character.transform.position = startRoom.transform.position;
         character.transform.localScale = Vector3.zero;
         character.transform.DOScale(Vector3.one, 0.2f).OnComplete(StartRun);
 
         void StartRun()
         {
-            character.StartRun(dungeon, startRoom, finalRoom, Win, Lose);
+            character.StartRun(dungeon, startRoom, Win, Lose);
             started = true;
         }
         

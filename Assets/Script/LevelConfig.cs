@@ -16,14 +16,10 @@ public class LevelConfig : ScriptableObject
     }
 
     [SerializeField] Vector2Int fieldSize;
-    [SerializeField] GridItem startRoom;
-    [SerializeField] GridItem finalRoom;
     [SerializeField] Entrance[] allowedTiles;
 
     public Vector2Int FieldSize => fieldSize;
 
-    public GridItem StartRoom => startRoom;
-    public GridItem FinalRoom => finalRoom;
     public IReadOnlyCollection<Entrance> AllowedTiles => allowedTiles;
 
 }
