@@ -33,29 +33,32 @@ public class GameScene : MonoBehaviour
         Grid.Build(levelConfig.FieldSize.x, levelConfig.FieldSize.y);
         
         PlaceItem(startRoom = Instantiate(levelConfig.StartRoom));
-
+        startRoom.PortalsCount = 1;
+        
         foreach (var tileEntrance in levelConfig.AllowedTiles)
         {
             GridItem item = Instantiate(tileEntrance.item);
             item.DungeonOperation = tileEntrance.operation; 
-            item.Params = tileEntrance.paramsContainer; 
+            item.Params = tileEntrance.paramsContainer;
             PlaceItem(item);
+            item.PortalsCount = tileEntrance.portalsCount;
         }
 
         PlaceItem(finalRoom = Instantiate(levelConfig.FinalRoom));
+        finalRoom.PortalsCount = 1;
     }
 
     private void Update()
     {
         if (started)
         {
-            displayHp.text = "HP:" + character.runtimeParamsContainer.Hp;
+            displayHp.text = $"HP:{character.runtimeParamsContainer.Hp:#.##}";
             sliderHp.value = character.runtimeParamsContainer.Hp/character.paramsContainer.Hp;
 
             displayLvl.text = "LVL:" + character.runtimeParamsContainer.Lvl;
             sliderExp.value = (float)character.runtimeParamsContainer.Exp / 10;
 
-            multiplierField.text = $"X{dungeon.Multiplier}";
+            multiplierField.text = $"X{dungeon.Multiplier:#.##}";
         }
     }
 

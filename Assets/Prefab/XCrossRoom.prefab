@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 1827729252750764358}
   - component: {fileID: 8105644386349387065}
   - component: {fileID: 1093239049926344644}
+  - component: {fileID: -6400907107644717002}
   m_Layer: 0
   m_Name: XCrossRoom
   m_TagString: Untagged
@@ -207,10 +208,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9281e51308a347ef8e418590967eb354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entersCount: 1
-  exitsCount: 3
   paramsContainer:
     Hp: -1
+    Lvl: 0
+    Exp: 0
+  dungeonOperation:
+    operation: 0
+    value: 0
+  portalsCount: 0
 --- !u!114 &1093239049926344644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,3 +248,22 @@ MonoBehaviour:
   onSelectedSelectFingerUp:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-6400907107644717002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2804154231605173174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c7ed9c0080c489cb8a45745320a92b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 8488301848957717169}
+  item: {fileID: 8105644386349387065}
+  sprite0001: {fileID: -1869756733, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  sprite0011: {fileID: 1523984029, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  sprite0101: {fileID: -2139438995, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  sprite0111: {fileID: 1075957903, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  sprite1111: {fileID: 1397604557, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7881990913371226309}
   - component: {fileID: 3769343221158597415}
   - component: {fileID: 2540307169365246315}
+  - component: {fileID: 3669068431455619649}
   m_Layer: 0
   m_Name: Room 4
   m_TagString: Untagged
@@ -124,12 +125,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9281e51308a347ef8e418590967eb354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entersCount: 1
-  exitsCount: 1
   paramsContainer:
     Hp: -4
     Lvl: 0
     Exp: 5
+  dungeonOperation:
+    operation: 0
+    value: 0
+  portalsCount: 0
 --- !u!114 &2540307169365246315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,6 +165,25 @@ MonoBehaviour:
   onSelectedSelectFingerUp:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3669068431455619649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3240902113540599037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c7ed9c0080c489cb8a45745320a92b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 5786758787162839636}
+  item: {fileID: 3769343221158597415}
+  sprite0001: {fileID: -1869756733, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  sprite0011: {fileID: 1523984029, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  sprite0101: {fileID: -2139438995, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  sprite0111: {fileID: 1075957903, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  sprite1111: {fileID: 1397604557, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
 --- !u!1 &3240902782606596247
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
 using DG.Tweening;
 using Lean.Touch;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public enum Direction
 {
@@ -18,10 +17,12 @@ public class GridItem : MonoBehaviour
 {
     public static Direction[] Neighbours = new[] { Direction.Bottom, Direction.Right, Direction.Top, Direction.Left };
     
-    [SerializeField] int entersCount;
-    [SerializeField] int exitsCount;
     [SerializeField] ParamsContainer paramsContainer;
     [SerializeField] DungeonMultiplierOperation dungeonOperation;
+
+    GridItemPortals gridItemPortals;
+
+    GridItemPortals GridItemPortals => gridItemPortals ? gridItemPortals : gridItemPortals = GetComponent<GridItemPortals>();
 
     public int X { get; set; }
     public int Y { get; set; }
@@ -40,6 +41,19 @@ public class GridItem : MonoBehaviour
         set => dungeonOperation = value;
     }
 
+    [SerializeField]
+    int portalsCount;
+    
+    public int PortalsCount
+    {
+        get => portalsCount;
+        set
+        {
+            portalsCount = value;
+            UpdatePortals();
+        }
+    }
+
     public bool IsValid
     {
         get
@@ -54,7 +68,7 @@ public class GridItem : MonoBehaviour
                     counter++;
             }
 
-            return counter == entersCount + exitsCount;
+            return counter == PortalsCount;
         }
     }
 
@@ -73,6 +87,17 @@ public class GridItem : MonoBehaviour
 
         transform.DOComplete();
         transform.DOPunchScale(Vector3.one * -0.2f, 0.4f, 0);
+        
+        UpdatePortals();
+
+        foreach (var direction in Neighbours)
+        {
+            var neighbour = GetNeighbour(direction);
+            
+            if(neighbour != null)
+                neighbour.UpdatePortals();
+        }
+        
         SoundManager.PlaySound("drop");
     }
 
@@ -143,6 +168,13 @@ public class GridItem : MonoBehaviour
     public void MarkAsNotValid()
     {
         SoundManager.PlaySound("wrong"); //fix activating all at same time
+        transform.DOComplete();
         transform.DOPunchScale(Vector3.one * 0.3f, 1, 5);
+    }
+
+    void UpdatePortals()
+    {
+        if(GridItemPortals != null)
+            GridItemPortals.UpdatePortals();
     }
 }

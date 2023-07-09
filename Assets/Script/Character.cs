@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 
@@ -15,8 +14,8 @@ public class Character : MonoBehaviour
     Action OnSuccess { get; set; }
     Action OnFail { get; set; }
     
-    readonly HashSet<GridItem> visitedGrids = new HashSet<GridItem>();
-    readonly Stack<GridItem> history = new Stack<GridItem>();
+    readonly HashSet<GridItem> visitedGrids = new ();
+    readonly Stack<GridItem> history = new ();
 
     GridItem LastRoom { get; set; }
 
