@@ -6,7 +6,7 @@ using UnityEngine.TextCore.Text;
 
 public class UIButtons : MonoBehaviour
 {
-
+    [SerializeField] GameObject FaqScreen;
     Tween tween;
 
     public void ButtonBop()
@@ -20,5 +20,10 @@ public class UIButtons : MonoBehaviour
     public void Start()
     {
         tween = transform.DOScale(Vector3.one * 1.05f, 0.4f).SetLoops(-1, LoopType.Yoyo);
+    }
+
+    public void Faq(bool status)
+    {
+        FaqScreen.SetActive(status);
     }
 }
