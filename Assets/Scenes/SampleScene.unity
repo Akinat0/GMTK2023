@@ -2112,7 +2112,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 1709548123}
   characterPrefab: {fileID: 504183511835787994, guid: 670fe6ef2bd9a433eafae99ea11437c7, type: 3}
-  levelConfig: {fileID: 11400000, guid: 824b98730c9884b34b919748089998a5, type: 2}
+  levelConfig:
+  - {fileID: 11400000, guid: 4433e6f3b08cb40bbb43bf592e535ee5, type: 2}
+  - {fileID: 11400000, guid: 9268c0349919243afb9688adf6af0cd1, type: 2}
   cameraConstraint: {fileID: 519420034}
   displayHp: {fileID: 470218559}
   displayLvl: {fileID: 1630356880}
