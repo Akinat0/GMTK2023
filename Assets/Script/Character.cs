@@ -18,6 +18,7 @@ public class Character : MonoBehaviour
     readonly Stack<GridItem> history = new ();
 
     Dungeon Dungeon { get; set; }
+    GridItem StartRoom { get; set; }
 
     public void StartRun(Dungeon dungeon, GridItem startRoom, Action onSuccess, Action onFail)
     {
@@ -28,14 +29,14 @@ public class Character : MonoBehaviour
         OnFail = onFail;
         
         Dungeon = dungeon;
-
+        StartRoom = startRoom;
 
         runtimeParamsContainer = new ParamsContainer(paramsContainer); 
         
-        StartRoom(startRoom, null);
+        BeginTheRoom(startRoom, null);
     }
 
-    void StartRoom(GridItem room, GridItem prevRoom)
+    void BeginTheRoom(GridItem room, GridItem prevRoom)
     {
         void NextRoom()
         {
@@ -50,7 +51,7 @@ public class Character : MonoBehaviour
                 return;
             }
             
-            if (room.PortalsCount == 1)
+            if (room.PortalsCount == 1 && room != StartRoom)
             {
                 OnSuccess?.Invoke();
                 return;
@@ -93,7 +94,7 @@ public class Character : MonoBehaviour
 
             var nextRoom = exits[Random.Range(0, exits.Count)];
                 
-            StartRoom(nextRoom, room);
+            BeginTheRoom(nextRoom, room);
         }
 
         Sequence sequence = DOTween.Sequence();
