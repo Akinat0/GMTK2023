@@ -49,7 +49,7 @@ public class GameScene : MonoBehaviour
             displayLvl.text = "LVL:" + character.runtimeParamsContainer.Lvl;
             sliderExp.value = (float)character.runtimeParamsContainer.Exp / 10;
 
-            multiplierField.text = $"X{dungeon.Multiplier:#.##}";
+            //multiplierField.text = $"X{dungeon.Multiplier:#.##}";
         }
     }
 
@@ -88,7 +88,7 @@ public class GameScene : MonoBehaviour
 
         dungeon = new Dungeon();
 
-        var startRooms = Grid.Items.Where(item => item.PortalsCount == 1).ToArray();
+        var startRooms = Grid.Items.Where(item => item != null && item.PortalsCount == 1).ToArray();
 
         GridItem startRoom = startRooms[Random.Range(0, startRooms.Length)]; 
         
