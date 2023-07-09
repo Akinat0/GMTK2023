@@ -11,7 +11,7 @@ public class GameScene : MonoBehaviour
 
     [SerializeField] GridController grid;
     [SerializeField] Character characterPrefab;
-    [SerializeField] LevelConfig levelConfig;
+    [SerializeField] LevelConfig[] levelConfig;
     [SerializeField] LeanConstrainToCollider cameraConstraint;
 
     Character character;
@@ -25,15 +25,20 @@ public class GameScene : MonoBehaviour
     [SerializeField] TextMeshProUGUI multiplierField;
     [SerializeField] Slider sliderHp, sliderExp;
     bool started;
+    int levelIndex;
 
     void Start()
     {
         Instance = this;
-        Grid.Build(levelConfig.FieldSize.x, levelConfig.FieldSize.y);
+        Grid.Build(levelConfig[0].FieldSize.x, levelConfig[0].FieldSize.y);
 
         cameraConstraint.Collider = Grid.CameraBounds;
+        AddTiles();
+    }
 
-        foreach (var tileEntrance in levelConfig.AllowedTiles)
+    void AddTiles()
+    {
+        foreach (var tileEntrance in levelConfig[levelIndex].AllowedTiles)
         {
             GridItem item = Instantiate(tileEntrance.item);
             item.DungeonOperation = tileEntrance.operation; 
@@ -41,6 +46,8 @@ public class GameScene : MonoBehaviour
             PlaceItem(item);
             item.PortalsCount = tileEntrance.portalsCount;
         }
+        
+        levelIndex++;
     }
 
     private void Update()
@@ -117,7 +124,8 @@ public class GameScene : MonoBehaviour
     void Win()
     {
         character.transform.DOScale(Vector3.one * 1.2f, 0.4f).SetLoops(-1, LoopType.Yoyo);
-        Debug.Log("WIN!");
+        
+        AddTiles();
     }
 
     void Lose()
