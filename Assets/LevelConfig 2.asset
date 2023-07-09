@@ -14,43 +14,53 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldSize: {x: 20, y: 20}
   allowedTiles:
+  - item: {fileID: 3374805734070610361, guid: 4957ffeedcde44beab619fa20aa629af, type: 3}
+    operation:
+      operation: 0
+      value: 1
+    paramsContainer:
+      Hp: -3
+      Lvl: 0
+      Exp: 0
+    portalsCount: 4
+    isRed: 1
+  - item: {fileID: 1455312958878512648, guid: 44ada128f3376413891cb5677b95ae62, type: 3}
+    operation:
+      operation: 0
+      value: 1
+    paramsContainer:
+      Hp: 5
+      Lvl: 0
+      Exp: 0
+    portalsCount: 1
+    isRed: 0
   - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
     operation:
-      operation: 1
+      operation: 4
       value: 2
     paramsContainer:
       Hp: 0
       Lvl: 0
       Exp: 0
-    portalsCount: 2
+    portalsCount: 1
     isRed: 0
-  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
+  - item: {fileID: 3654477504784723246, guid: 41d44934a8d71482ebc67dce0b97f780, type: 3}
     operation:
-      operation: 6
-      value: 0
+      operation: 0
+      value: 2
     paramsContainer:
-      Hp: 0
+      Hp: -2
       Lvl: 0
       Exp: 0
     portalsCount: 2
     isRed: 0
-  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
+  - item: {fileID: 3654477504784723246, guid: 41d44934a8d71482ebc67dce0b97f780, type: 3}
     operation:
-      operation: 6
-      value: 0
+      operation: 0
+      value: 2
     paramsContainer:
-      Hp: 0
+      Hp: -2
       Lvl: 0
       Exp: 0
-    portalsCount: 3
-    isRed: 0
-  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
-    operation:
-      operation: 6
-      value: 0
-    paramsContainer:
-      Hp: 0
-      Lvl: 0
-      Exp: 0
-    portalsCount: 3
+    portalsCount: 2
     isRed: 0

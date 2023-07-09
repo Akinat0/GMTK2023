@@ -17,13 +17,17 @@ public class GameScene : MonoBehaviour
     public Character character;
 
     Dungeon dungeon;
+
+    GridItem startRoom;
     
     public static GridController Grid => Instance != null ? Instance.grid : null;
 
     //UI DISPLAY
     [SerializeField] TextMeshProUGUI displayHp, displayLvl;
     [SerializeField] TextMeshProUGUI multiplierField;
+    [SerializeField] TextMeshProUGUI[] roomsCountField;
     [SerializeField] Slider sliderHp, sliderExp;
+    [SerializeField] GameObject win;
     public bool started;
     int levelIndex;
 
@@ -38,7 +42,11 @@ public class GameScene : MonoBehaviour
 
     void AddTiles()
     {
-        foreach (var tileEntrance in levelConfig[levelIndex].AllowedTiles)
+        LevelConfig config = levelIndex < levelConfig.Length 
+            ? levelConfig[levelIndex] 
+            : levelConfig[Random.Range(0, levelConfig.Length)];
+        
+        foreach (var tileEntrance in config.AllowedTiles)
         {
             GridItem item = Instantiate(tileEntrance.item);
             item.DungeonOperation = tileEntrance.operation; 
@@ -51,28 +59,65 @@ public class GameScene : MonoBehaviour
         levelIndex++;
     }
 
+    int roomsCount = 0;
+    float multiplier = 1;
+    
     private void Update()
     {
         if (started)
         {
-            displayHp.text = $"HP:{character.runtimeParamsContainer.Hp:#.#}";
+            // displayHp.text = $"HP:{character.runtimeParamsContainer.Hp:#.#}";
+            displayHp.text = $"HP:{Mathf.Ceil(character.runtimeParamsContainer.Hp)}";
             sliderHp.value = character.runtimeParamsContainer.Hp/character.paramsContainer.Hp;
 
             displayLvl.text = "LVL:" + character.runtimeParamsContainer.Lvl;
             sliderExp.value = (float)character.runtimeParamsContainer.Exp / 10;
 
-            if(dungeon != null)
+            if (dungeon != null)
+            {
                 multiplierField.text = $"X{dungeon.Multiplier:#.##}";
+                
+                if (!Mathf.Approximately(multiplier, dungeon.Multiplier))
+                {
+                    multiplier = dungeon.Multiplier;
+                    multiplierField.text = $"X{dungeon.Multiplier:#.##}";
+                    multiplierField.transform.DOPunchScale(Vector3.one * 0.1f, 0.15f, 1);
+                }
+                
+                if (roomsCount != dungeon.RoomsCount)
+                {
+                    roomsCount = dungeon.RoomsCount;
+
+                    foreach (var rooms in roomsCountField)
+                    {
+                        rooms.text = $"Rooms:{dungeon.RoomsCount}";
+                        rooms.transform.DOPunchScale(Vector3.one * 0.1f, 0.15f, 1);
+                    }
+                }
+            }
         }
     }
 
     void PlaceItem(GridItem item)
     {
-        for (int i = 0; i < grid.Width; i++)
+        if (dungeon == null)
         {
-            for (int j = 0; j < grid.Height; j++)
+            for (int i = 2; i < grid.Height; i++)
             {
-                if (grid.TryPlaceItem(item, i, j))
+                for (int j = 2; j < grid.Width; j++)
+                {
+                    if (grid.TryPlaceItem(item, j, i))
+                        return;
+                }
+            }
+            return;
+        }
+        
+        for (int i = 0; i < grid.Height; i++)
+        {
+            for (int j = 0; j < grid.Width; j++)
+            {
+                if (grid.TryPlaceItem(item, j, i))
                     return;
             }
         }
@@ -102,18 +147,25 @@ public class GameScene : MonoBehaviour
         foreach (var item in Grid.Items.Where(item => item != null))
             item.ResetItem();
 
-        dungeon = new Dungeon();
-
-        var startRooms = Grid.Items.Where(item => item != null && item.PortalsCount == 1).ToArray();
-
-        GridItem startRoom = startRooms[Random.Range(0, startRooms.Length)]; 
+        dungeon ??= new Dungeon();
         
-        character = character ? character : Instantiate(characterPrefab);
-        character.transform.DOComplete();
+        if (startRoom == null)
+        {
+            var startRooms = Grid.Items.Where(item => item != null && item.PortalsCount == 1).ToArray();
+            startRoom = startRooms[Random.Range(0, startRooms.Length)];
+            
+            character = Instantiate(characterPrefab);
+            character.transform.position = startRoom.transform.position;
+            character.transform.localScale = Vector3.zero;
+            started = true;
+            character.transform.DOScale(Vector3.one, 0.2f).OnComplete(StartRun);
+        }
+        else
+        {
+            startRoom = character.ActiveRoom;
+            StartRun();
+        }
         
-        character.transform.position = startRoom.transform.position;
-        character.transform.localScale = Vector3.zero;
-        character.transform.DOScale(Vector3.one, 0.2f).OnComplete(StartRun);
 
         void StartRun()
         {
@@ -126,7 +178,6 @@ public class GameScene : MonoBehaviour
     {
         character.transform.DOScale(Vector3.one * 1.2f, 0.4f).SetLoops(-1, LoopType.Yoyo);
 
-        started = false;
         
         AddTiles();
     }
@@ -134,8 +185,11 @@ public class GameScene : MonoBehaviour
     void Lose()
     {
         character.transform.DOScale(Vector3.zero, 0.2f);
+        win.SetActive(true);
         Debug.Log("Lose :(");
         
         started = false;
+        
+        AddTiles();
     }
 }

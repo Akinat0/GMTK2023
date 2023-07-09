@@ -22,6 +22,11 @@ public class Character : MonoBehaviour
     Dungeon Dungeon { get; set; }
     GridItem StartRoom { get; set; }
 
+    void Start()
+    {
+        runtimeParamsContainer = new ParamsContainer(paramsContainer);
+    }
+
     public void StartRun(Dungeon dungeon, GridItem startRoom, Action onSuccess, Action onFail)
     {
         history.Clear();
@@ -33,8 +38,6 @@ public class Character : MonoBehaviour
         Dungeon = dungeon;
         StartRoom = startRoom;
 
-        runtimeParamsContainer = new ParamsContainer(paramsContainer); 
-        
         BeginTheRoom(startRoom, null);
     }
 
@@ -101,6 +104,7 @@ public class Character : MonoBehaviour
         }
 
         ActiveRoom = room;
+        Dungeon.RoomsCount++;
         
         Sequence sequence = DOTween.Sequence();
         sequence

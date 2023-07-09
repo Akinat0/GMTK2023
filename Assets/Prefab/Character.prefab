@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paramsContainer:
-    Hp: 10
+    Hp: 999
     Lvl: 1
     Exp: 0
   runtimeParamsContainer:

@@ -16,7 +16,7 @@ MonoBehaviour:
   allowedTiles:
   - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
     operation:
-      operation: 1
+      operation: 0
       value: 2
     paramsContainer:
       Hp: 0
@@ -24,53 +24,53 @@ MonoBehaviour:
       Exp: 0
     portalsCount: 1
     isRed: 0
+  - item: {fileID: 3654477504784723246, guid: 41d44934a8d71482ebc67dce0b97f780, type: 3}
+    operation:
+      operation: 0
+      value: 0
+    paramsContainer:
+      Hp: -2
+      Lvl: 0
+      Exp: 0
+    portalsCount: 2
+    isRed: 0
   - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
     operation:
-      operation: 6
+      operation: 2
+      value: 3
+    paramsContainer:
+      Hp: 0
+      Lvl: 0
+      Exp: 0
+    portalsCount: 2
+    isRed: 1
+  - item: {fileID: 3374805734070610361, guid: 4957ffeedcde44beab619fa20aa629af, type: 3}
+    operation:
+      operation: 0
+      value: 0
+    paramsContainer:
+      Hp: -3
+      Lvl: 0
+      Exp: 0
+    portalsCount: 2
+    isRed: 0
+  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
+    operation:
+      operation: 1
+      value: 2
+    paramsContainer:
+      Hp: 0
+      Lvl: 0
+      Exp: 0
+    portalsCount: 2
+    isRed: 1
+  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
+    operation:
+      operation: 0
       value: 0
     paramsContainer:
       Hp: 0
       Lvl: 0
       Exp: 0
     portalsCount: 1
-    isRed: 1
-  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
-    operation:
-      operation: 6
-      value: 0
-    paramsContainer:
-      Hp: 0
-      Lvl: 0
-      Exp: 0
-    portalsCount: 2
-    isRed: 0
-  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
-    operation:
-      operation: 6
-      value: 0
-    paramsContainer:
-      Hp: 0
-      Lvl: 0
-      Exp: 0
-    portalsCount: 2
-    isRed: 0
-  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
-    operation:
-      operation: 6
-      value: 0
-    paramsContainer:
-      Hp: 0
-      Lvl: 0
-      Exp: 0
-    portalsCount: 2
-    isRed: 0
-  - item: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
-    operation:
-      operation: 6
-      value: 0
-    paramsContainer:
-      Hp: 0
-      Lvl: 0
-      Exp: 0
-    portalsCount: 2
     isRed: 0
