@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3669068431455619649}
   - component: {fileID: -8687846613667272415}
   m_Layer: 0
-  m_Name: Room 4
+  m_Name: Room_Treasure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202,6 +202,7 @@ MonoBehaviour:
   - {fileID: 2686296422785377305}
   textRenderers: []
   contentRenderer: {fileID: 5647209589099441426}
+  red: {r: 0.6117647, g: 0.21176472, b: 0.26666668, a: 1}
 --- !u!1 &3240902782606596247
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,7 +360,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 561568906, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  m_Sprite: {fileID: -1299153985, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

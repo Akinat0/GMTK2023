@@ -180,6 +180,7 @@ public class GridItem : MonoBehaviour
     
     public void MarkAsNotValid()
     {
+        GridItemAlpha.SetColor();
         SoundManager.PlaySound("wrong"); //fix activating all at same time
         transform.DOComplete();
         transform.DOPunchScale(Vector3.one * 0.3f, 1, 5);

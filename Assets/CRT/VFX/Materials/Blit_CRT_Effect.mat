@@ -32,8 +32,8 @@ Material:
     - _ScanlineLines: 232.2
     - _ScanlineStrength: 0.043
     - _SpherizeStrength: 0
-    - _SubpixelStrength: 0.3
-    - _SubpixelStripes: 450
+    - _SubpixelStrength: 0.15
+    - _SubpixelStripes: 600
     m_Colors:
     - _BordersCS: {r: 0, g: 1, b: 0, a: 1}
     - _FrameColor: {r: 0.33361515, g: 0.4774631, b: 0.5943396, a: 1}

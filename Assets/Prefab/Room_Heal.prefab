@@ -202,6 +202,7 @@ MonoBehaviour:
   - {fileID: 5904319710796910673}
   textRenderers: []
   contentRenderer: {fileID: 6565811088095385965}
+  red: {r: 0.6117647, g: 0.21176472, b: 0.26666668, a: 1}
 --- !u!1 &6565811088095385965
 GameObject:
   m_ObjectHideFlags: 0

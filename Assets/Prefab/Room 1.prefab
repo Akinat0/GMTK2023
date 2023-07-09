@@ -370,3 +370,5 @@ MonoBehaviour:
   - {fileID: 648288536577908531}
   textRenderers: []
   contentRenderer: {fileID: 1825082108399746583}
+  red: {r: 0.6117647, g: 0.21176472, b: 0.26666668, a: 1}
+  def: {r: 1, g: 1, b: 1, a: 0}
