@@ -17,6 +17,8 @@ public class Character : MonoBehaviour
     readonly HashSet<GridItem> visitedGrids = new ();
     readonly Stack<GridItem> history = new ();
 
+    public GridItem ActiveRoom { get; private set; }
+
     Dungeon Dungeon { get; set; }
     GridItem StartRoom { get; set; }
 
@@ -98,6 +100,8 @@ public class Character : MonoBehaviour
             BeginTheRoom(nextRoom, room);
         }
 
+        ActiveRoom = room;
+        
         Sequence sequence = DOTween.Sequence();
         sequence
             .Append(transform.DOMove(room.transform.position, 0.5f))

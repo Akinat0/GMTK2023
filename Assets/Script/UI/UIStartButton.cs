@@ -5,6 +5,9 @@ public class UIStartButton : MonoBehaviour
 {
     public void StartGame()
     {
-        GameScene.Instance.StartGame();
+        if(!GameScene.Instance.started)
+            GameScene.Instance.StartGame();
     }
+    
+    
 }

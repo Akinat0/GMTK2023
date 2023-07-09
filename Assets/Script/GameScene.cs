@@ -14,7 +14,7 @@ public class GameScene : MonoBehaviour
     [SerializeField] LevelConfig[] levelConfig;
     [SerializeField] LeanConstrainToCollider cameraConstraint;
 
-    Character character;
+    public Character character;
 
     Dungeon dungeon;
     
@@ -24,7 +24,7 @@ public class GameScene : MonoBehaviour
     [SerializeField] TextMeshProUGUI displayHp, displayLvl;
     [SerializeField] TextMeshProUGUI multiplierField;
     [SerializeField] Slider sliderHp, sliderExp;
-    bool started;
+    public bool started;
     int levelIndex;
 
     void Start()
@@ -124,6 +124,8 @@ public class GameScene : MonoBehaviour
     void Win()
     {
         character.transform.DOScale(Vector3.one * 1.2f, 0.4f).SetLoops(-1, LoopType.Yoyo);
+
+        started = false;
         
         AddTiles();
     }
@@ -132,5 +134,7 @@ public class GameScene : MonoBehaviour
     {
         character.transform.DOScale(Vector3.zero, 0.2f);
         Debug.Log("Lose :(");
+        
+        started = false;
     }
 }

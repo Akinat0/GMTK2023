@@ -118,6 +118,18 @@ public class GridItem : MonoBehaviour
         };
     }
     
+    
+    void Update()
+    {
+        bool isEnabled = 
+            !GameScene.Instance.started 
+            && GameScene.Instance.character 
+            && GameScene.Instance.character.ActiveRoom != this;
+        
+        GetComponent<LeanDragTranslateAlong>().enabled = isEnabled;
+        GetComponent<LeanSelectableByFinger>().enabled = isEnabled;
+    }
+    
     void OnEnable()
     {
         GetComponent<LeanSelectableByFinger>().OnSelectedFinger.AddListener(OnSelectedFingerHandler);
