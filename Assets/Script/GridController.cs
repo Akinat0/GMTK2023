@@ -1,6 +1,4 @@
-
 using System.Collections.Generic;
-using System.Linq;
 using DG.Tweening;
 using Lean.Common;
 using UnityEngine;
@@ -22,6 +20,9 @@ public class GridController : MonoBehaviour
     public IReadOnlyCollection<GridItem> Items => items;
 
     public LeanPlane Plane => plane;
+    BoxCollider cameraBounds;
+
+    public BoxCollider CameraBounds => cameraBounds;
 
     public void Build(int width, int height)
     {
@@ -29,6 +30,10 @@ public class GridController : MonoBehaviour
         gridHeight = height;
         
         plane = new GameObject("Grid").AddComponent<LeanPlane>();
+
+        Vector3 gridPos = plane.transform.position;
+        gridPos.z = -0.5f;
+        plane.transform.position = gridPos;
 
         plane.ClampX = true;
         plane.ClampY = true;
@@ -51,6 +56,15 @@ public class GridController : MonoBehaviour
             }
         }
 
+        cameraBounds = gameObject.AddComponent<BoxCollider>();
+
+        Camera cam = Camera.main;
+        var camSize = new Vector3(cam.orthographicSize * 2 * cam.aspect, cam.orthographicSize * 2, 0);
+        
+        Vector3 gridSize = new Vector3(gridWidth * cellSize, gridHeight * cellSize, 0);
+        cameraBounds.center = gridSize / 2 - new Vector3(cellSize / 2, cellSize / 2) + new Vector3(camSize.x * 0.2f / 2, 0, 0);
+        cameraBounds.size = new Vector3(gridWidth * cellSize, gridWidth * cellSize, 10000) - camSize * 0.9f + new Vector3(camSize.x * 0.2f, 0, 0);
+
         items = new GridItem[gridHeight * gridWidth];
     }
 
@@ -66,6 +80,7 @@ public class GridController : MonoBehaviour
         GridItem item = items[index];
         item.DetachItem();
         items[index] = null;
+        UpdateItemPortals(item);
         return item;
     }
     
@@ -74,13 +89,14 @@ public class GridController : MonoBehaviour
         if (IsBusyCell(x, y))
             return false;
 
-        if (item.IsOnGrid) //it can be first placement for this item
+        if (item.IsOnGrid)
             DetachItem(item.X, item.Y);
 
         item.AttachItem(this, x, y);
         
         items[GetCellIndex(x, y)] = item;
         
+        item.UpdatePortals();
         UpdateItemPortals(item);
 
         TryGetCellPosition(x, y, out Vector3 pos);
@@ -92,9 +108,6 @@ public class GridController : MonoBehaviour
 
     void UpdateItemPortals(GridItem item)
     {
-        //Update items after item added to the grid
-        item.UpdatePortals();
-
         foreach (var direction in GridItem.Neighbours)
         {
             var neighbour = item.GetNeighbour(direction);
@@ -102,7 +115,6 @@ public class GridController : MonoBehaviour
             if(neighbour != null)
                 neighbour.UpdatePortals();
         }
-        //
     }
     
     public bool TryGetCellCoordinates(Vector3 pos, out int x, out int y)

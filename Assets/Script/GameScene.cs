@@ -1,5 +1,6 @@
 using System.Linq;
 using DG.Tweening;
+using Lean.Common;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class GameScene : MonoBehaviour
     [SerializeField] GridController grid;
     [SerializeField] Character characterPrefab;
     [SerializeField] LevelConfig levelConfig;
+    [SerializeField] LeanConstrainToCollider cameraConstraint;
 
     Character character;
 
@@ -28,6 +30,8 @@ public class GameScene : MonoBehaviour
     {
         Instance = this;
         Grid.Build(levelConfig.FieldSize.x, levelConfig.FieldSize.y);
+
+        cameraConstraint.Collider = Grid.CameraBounds;
 
         foreach (var tileEntrance in levelConfig.AllowedTiles)
         {
@@ -49,7 +53,8 @@ public class GameScene : MonoBehaviour
             displayLvl.text = "LVL:" + character.runtimeParamsContainer.Lvl;
             sliderExp.value = (float)character.runtimeParamsContainer.Exp / 10;
 
-            //multiplierField.text = $"X{dungeon.Multiplier:#.##}";
+            if(dungeon != null)
+                multiplierField.text = $"X{dungeon.Multiplier:#.##}";
         }
     }
 
