@@ -1341,7 +1341,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -12.500244}
+  m_AnchoredPosition: {x: 0, y: -12.500183}
   m_SizeDelta: {x: 30, y: -25}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &423222092
@@ -3400,7 +3400,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -307}
+  m_AnchoredPosition: {x: 0, y: -214}
   m_SizeDelta: {x: 255.02, y: 210.71}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1041405475
@@ -4370,7 +4370,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You killed the rodue
+  m_text: You killed the rogue
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 63361a2ad8993414990e124fe0e6c6f9, type: 2}
   m_sharedMaterial: {fileID: 2397106234202964807, guid: 63361a2ad8993414990e124fe0e6c6f9, type: 2}
@@ -4638,7 +4638,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -35, y: -12.500244}
+  m_AnchoredPosition: {x: -35, y: -12.500183}
   m_SizeDelta: {x: 25, y: -25}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1621368365
@@ -5010,6 +5010,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1763298750}
   - component: {fileID: 1763298751}
+  - component: {fileID: 1763298752}
   m_Layer: 5
   m_Name: LVL_Hp
   m_TagString: Untagged
@@ -5090,7 +5091,36 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1763298752}
+        m_TargetAssemblyTypeName: UIButtons, Assembly-CSharp
+        m_MethodName: ButtonBop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1763298752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763298749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 853b36e6f3d694ea7a1dbef9d6ff9b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FaqScreen: {fileID: 0}
+  image: {fileID: 0}
+  sprite1: {fileID: 0}
+  sprite2: {fileID: 0}
+  listener: {fileID: 0}
 --- !u!1 &1769627497
 GameObject:
   m_ObjectHideFlags: 0
@@ -5187,8 +5217,8 @@ RectTransform:
   m_Children:
   - {fileID: 194979999}
   - {fileID: 622768684}
-  - {fileID: 170073434}
   - {fileID: 1567324046}
+  - {fileID: 170073434}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5675,7 +5705,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -151.64}
+  m_AnchoredPosition: {x: 0, y: -63}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2072769355
@@ -5836,7 +5866,7 @@ MonoBehaviour:
   m_text: '
 
 
-    WIN'
+    WIN!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 63361a2ad8993414990e124fe0e6c6f9, type: 2}
   m_sharedMaterial: {fileID: 2397106234202964807, guid: 63361a2ad8993414990e124fe0e6c6f9, type: 2}

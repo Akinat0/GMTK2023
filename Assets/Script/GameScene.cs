@@ -38,6 +38,8 @@ public class GameScene : MonoBehaviour
 
         cameraConstraint.Collider = Grid.CameraBounds;
         AddTiles();
+
+        multiplierField.transform.DOScale(Vector3.one * 1.03f, 2f).SetLoops(-1, LoopType.Yoyo);
     }
 
     void AddTiles()
@@ -80,8 +82,8 @@ public class GameScene : MonoBehaviour
                 if (!Mathf.Approximately(multiplier, dungeon.Multiplier))
                 {
                     multiplier = dungeon.Multiplier;
-                    multiplierField.text = $"X{dungeon.Multiplier:#.##}";
-                    multiplierField.transform.DOPunchScale(Vector3.one * 0.1f, 0.15f, 1);
+                    multiplierField.text = $"X{dungeon.Multiplier:#.#}";
+                    multiplierField.transform.DOPunchScale(Vector3.one * 0.3f, 0.15f, 1);
                 }
                 
                 if (roomsCount != dungeon.RoomsCount)

@@ -31,7 +31,7 @@ public class UIButtons : MonoBehaviour
 
     public void Start()
     {
-        tween = transform.DOScale(Vector3.one * 1.05f, 0.4f).SetLoops(-1, LoopType.Yoyo);
+        tween = transform.DOScale(Vector3.one * 1.03f, 2f).SetLoops(-1, LoopType.Yoyo);
     }
 
     public void Faq()
