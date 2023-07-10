@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using TMPro;
 using Random = UnityEngine.Random;
 
 
@@ -21,6 +22,10 @@ public class Character : MonoBehaviour
 
     Dungeon Dungeon { get; set; }
     GridItem StartRoom { get; set; }
+
+    [SerializeField] TextMeshPro damage;
+    [SerializeField] Color red;
+    [SerializeField] Color green;
 
     void Start()
     {
@@ -50,6 +55,18 @@ public class Character : MonoBehaviour
             
             room.DungeonOperation.Apply(Dungeon);
             runtimeParamsContainer.Apply(room.Params, Dungeon);
+
+            Debug.Log(room.Params.Hp * Dungeon.Multiplier);
+
+            if (room.Params.Hp != 0)
+            {
+                string toDisplay = room.Params.Hp > 0 ? "+" + room.Params.Hp * Dungeon.Multiplier : room.Params.Hp * Dungeon.Multiplier + "";
+                Color toDisplayColor = room.Params.Hp > 0 ? green : red; // change to palette colors
+                damage.text = toDisplay;
+                damage.color = toDisplayColor;
+                damage.transform.DOPunchScale(Vector3.one * 0.3f, 0.3f, 0); //idk if this one working or not
+            }
+            else damage.text = null;
 
             if (runtimeParamsContainer.Hp <= 0)
             {
