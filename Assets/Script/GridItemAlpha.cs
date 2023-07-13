@@ -1,13 +1,35 @@
-
 using TMPro;
 using UnityEngine;
-using System.Collections;
+using Lean.Common;
 
-public class GridItemAlpha : MonoBehaviour
+public class GridItemAlpha : LeanSelectableBehaviour
 {
     [SerializeField] SpriteRenderer[] spriteRenderers;
     [SerializeField] TextMeshPro[] textRenderers;
     [SerializeField] GameObject contentRenderer;
+    
+    protected override void Start()
+    {
+        base.Start();
+
+        UpdateAlpha();
+    }
+    
+    protected override void OnSelected(LeanSelect select)
+    {
+        UpdateAlpha();
+    }
+
+    protected override void OnDeselected(LeanSelect select)
+    {
+        UpdateAlpha();
+    }
+
+    public void UpdateAlpha()
+    {
+        var alpha = Selectable != null && Selectable.IsSelected ? 0.4f : 1;
+        SetAlpha(alpha);
+    }
 
     public void SetAlpha(float alpha)
     {

@@ -1,26 +1,32 @@
+using System;
 using System.Linq;
 using DG.Tweening;
 using Lean.Common;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class GameScene : MonoBehaviour
 {
-    public static GameScene Instance { get; private set; }
+    static GameScene Instance { get; set; }
 
     [SerializeField] GridController grid;
     [SerializeField] Character characterPrefab;
     [SerializeField] LevelConfig[] levelConfig;
     [SerializeField] LeanConstrainToCollider cameraConstraint;
 
-    public Character character;
+    Character character;
 
     Dungeon dungeon;
 
     GridItem startRoom;
     
     public static GridController Grid => Instance != null ? Instance.grid : null;
+    public static Character Character => Instance != null ? Instance.character : null;
+
+    public static event Action OnStartRun;
+    public static event Action OnEndRun;
 
     //UI DISPLAY
     [SerializeField] TextMeshProUGUI displayHp, displayLvl;
@@ -28,7 +34,9 @@ public class GameScene : MonoBehaviour
     [SerializeField] TextMeshProUGUI[] roomsCountField;
     [SerializeField] Slider sliderHp, sliderExp;
     [SerializeField] GameObject win;
-    public bool started;
+    [SerializeField] Button startButton;
+
+    bool started;
     int levelIndex;
 
     void Start()
@@ -40,6 +48,8 @@ public class GameScene : MonoBehaviour
         AddTiles();
 
         multiplierField.transform.DOScale(Vector3.one * 1.03f, 2f).SetLoops(-1, LoopType.Yoyo);
+        
+        startButton.onClick.AddListener(StartGame);
     }
 
     void AddTiles()
@@ -64,37 +74,39 @@ public class GameScene : MonoBehaviour
     int roomsCount = 0;
     float multiplier = 1;
     
-    private void Update()
+    void Update()
     {
-        if (started)
+        startButton.interactable = !started;
+
+        if (!started)
+            return;
+        
+        // displayHp.text = $"HP:{character.runtimeParamsContainer.Hp:#.#}";
+        displayHp.text = $"HP:{Mathf.Ceil(character.runtimeParamsContainer.Hp)}";
+        sliderHp.value = character.runtimeParamsContainer.Hp/character.paramsContainer.Hp;
+
+        displayLvl.text = "LVL:" + character.runtimeParamsContainer.Lvl;
+        sliderExp.value = (float)character.runtimeParamsContainer.Exp / 10;
+
+        if (dungeon != null)
         {
-            // displayHp.text = $"HP:{character.runtimeParamsContainer.Hp:#.#}";
-            displayHp.text = $"HP:{Mathf.Ceil(character.runtimeParamsContainer.Hp)}";
-            sliderHp.value = character.runtimeParamsContainer.Hp/character.paramsContainer.Hp;
-
-            displayLvl.text = "LVL:" + character.runtimeParamsContainer.Lvl;
-            sliderExp.value = (float)character.runtimeParamsContainer.Exp / 10;
-
-            if (dungeon != null)
+            multiplierField.text = $"X{dungeon.Multiplier:#.##}";
+                
+            if (!Mathf.Approximately(multiplier, dungeon.Multiplier))
             {
-                multiplierField.text = $"X{dungeon.Multiplier:#.##}";
+                multiplier = dungeon.Multiplier;
+                multiplierField.text = $"X{dungeon.Multiplier:#.#}";
+                multiplierField.transform.DOPunchScale(Vector3.one * 0.3f, 0.15f, 1);
+            }
                 
-                if (!Mathf.Approximately(multiplier, dungeon.Multiplier))
-                {
-                    multiplier = dungeon.Multiplier;
-                    multiplierField.text = $"X{dungeon.Multiplier:#.#}";
-                    multiplierField.transform.DOPunchScale(Vector3.one * 0.3f, 0.15f, 1);
-                }
-                
-                if (roomsCount != dungeon.RoomsCount)
-                {
-                    roomsCount = dungeon.RoomsCount;
+            if (roomsCount != dungeon.RoomsCount)
+            {
+                roomsCount = dungeon.RoomsCount;
 
-                    foreach (var rooms in roomsCountField)
-                    {
-                        rooms.text = $"Rooms:{dungeon.RoomsCount}";
-                        rooms.transform.DOPunchScale(Vector3.one * 0.1f, 0.15f, 1);
-                    }
+                foreach (var rooms in roomsCountField)
+                {
+                    rooms.text = $"Rooms:{dungeon.RoomsCount}";
+                    rooms.transform.DOPunchScale(Vector3.one * 0.1f, 0.15f, 1);
                 }
             }
         }
@@ -142,15 +154,18 @@ public class GameScene : MonoBehaviour
                 hasNotValid = true;
             }
         }
-        
-        if(hasNotValid)
+
+        if (hasNotValid)
+        {
+            SoundManager.PlaySound("wrong");
             return;
+        }
 
         foreach (var item in Grid.Items.Where(item => item != null))
             item.ResetItem();
 
         dungeon ??= new Dungeon();
-        
+
         if (startRoom == null)
         {
             var startRooms = Grid.Items.Where(item => item != null && item.PortalsCount == 1).ToArray();
@@ -167,29 +182,38 @@ public class GameScene : MonoBehaviour
             startRoom = character.ActiveRoom;
             StartRun();
         }
-        
 
         void StartRun()
         {
+            OnStartRun?.Invoke();
+            
             character.StartRun(dungeon, startRoom, Win, Lose);
             started = true;
         }
     }
 
+    //Player is still playing 
     void Win()
     {
+        foreach (var item in Grid.Items.Where(item => item != null))
+            item.ResetItem();
+        
+        Grid.SetMovableAll(true);
+        character.ActiveRoom.IsMovable = false;
+        
         character.transform.DOScale(Vector3.one * 1.2f, 0.4f).SetLoops(-1, LoopType.Yoyo);
 
         started = false;
         AddTiles();
+        
+        OnEndRun?.Invoke();
     }
 
+    //Player won 
     void Lose()
     {
         character.transform.DOScale(Vector3.zero, 0.2f);
         win.SetActive(true);
-        Debug.Log("Lose :(");
-        
         started = false;
         
         AddTiles();

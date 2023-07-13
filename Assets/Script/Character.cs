@@ -56,7 +56,7 @@ public class Character : MonoBehaviour
             room.DungeonOperation.Apply(Dungeon);
             runtimeParamsContainer.Apply(room.Params, Dungeon);
 
-            Debug.Log(room.Params.Hp * Dungeon.Multiplier);
+            // Debug.Log(room.Params.Hp * Dungeon.Multiplier);
 
             if (room.Params.Hp != 0)
             {
@@ -119,8 +119,13 @@ public class Character : MonoBehaviour
                 
             BeginTheRoom(nextRoom, room);
         }
-
+        
+        if(ActiveRoom != null)
+            ActiveRoom.LeanSelectableByFinger.enabled = true; // enable old room
+        
         ActiveRoom = room;
+        ActiveRoom.LeanSelectableByFinger.enabled = false; //disable new room
+        
         Dungeon.RoomsCount++;
         
         Sequence sequence = DOTween.Sequence();

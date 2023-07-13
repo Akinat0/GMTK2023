@@ -7,9 +7,7 @@ using CW.Common;
 namespace Lean.Touch
 {
 	/// <summary>This component will draw a selection box.</summary>
-	[HelpURL(LeanTouch.PlusHelpUrlPrefix + "LeanSelectionBox")]
-	[AddComponentMenu(LeanTouch.ComponentPathPrefix + "Selection Box")]
-	public class LeanSelectionBox : MonoBehaviour
+	public class SelectionBox : MonoBehaviour
 	{
 		// This class will store an association between a Finger and a RectTransform instance
 		[System.Serializable]
@@ -44,8 +42,11 @@ namespace Lean.Touch
 		// This stores all the links between Fingers and RectTransform instances
 		private List<FingerData> fingerDatas = new List<FingerData>();
 
-		// Temporary selectables inside box
-		private static List<LeanSelectable> selectables = new List<LeanSelectable>();
+		// Temporary currentSelectables inside box
+		private static HashSet<LeanSelectable> oldSelectables = new HashSet<LeanSelectable>();
+		private static HashSet<LeanSelectable> prevSelectables = new HashSet<LeanSelectable>();
+		private static HashSet<LeanSelectable> currentSelectables = new HashSet<LeanSelectable>();
+		// private static List<LeanSelectable> newSelectables = new List<LeanSelectable>();
 
 		protected virtual void OnEnable()
 		{
@@ -63,6 +64,11 @@ namespace Lean.Touch
 
 		private void HandleFingerDown(LeanFinger finger)
 		{
+			oldSelectables.Clear();
+
+			foreach (var selectable in select.Selectables)
+				oldSelectables.Add(selectable);
+
 			// Limit to one selection box
 			if (fingerDatas.Count > 0)
 			{
@@ -167,8 +173,9 @@ namespace Lean.Touch
 				viewportRect.min = min;
 				viewportRect.max = max;
 
-				// Rebuild list of all selectables within rect
-				selectables.Clear();
+				// Rebuild list of all currentSelectables within rect
+				currentSelectables.Clear();
+
 
 				foreach (var selectable in LeanSelectableByFinger.Instances)
 				{
@@ -178,21 +185,36 @@ namespace Lean.Touch
 					{
 						var viewportPoint = camera.WorldToViewportPoint(selectable.transform.position);
 
-						if (viewportRect.Contains(viewportPoint) == true)
+						if (viewportRect.Contains(viewportPoint))
 						{
-							selectables.Add(selectable);
+							if(!oldSelectables.Contains(selectable))
+								currentSelectables.Add(selectable);
 						}
 					}
 				}
 
-				foreach (LeanSelectable selectable in select.Selectables)
-				{
-					if(!selectables.Contains(selectable))
-						selectables.Add(selectable);
-				}
+				// print("Select: ");
+				// foreach (LeanSelectable toDeselect in prevSelectables.Where(selectable => !currentSelectables.Contains(selectable)))
+				// {
+				// 	print(toDeselect.);
+				// 	select.Deselect(toDeselect);
+				// }
+				//
+				// foreach (LeanSelectable toSelect in currentSelectables.Where(selectable => !prevSelectables.Contains(selectable)))
+				// 	select.Select(toSelect);
+				
+				//
+				// foreach (LeanSelectable selectable in select.Selectables)
+				// {
+				// 	if(!currentSelectables.Contains(selectable))
+				// 		currentSelectables.Add(selectable);
+				// }
+
+				foreach (var oldSelectable in oldSelectables)
+					currentSelectables.Add(oldSelectable);
 
 				// Select them
-				select.ReplaceSelection(selectables, finger);
+				select.ReplaceSelection(currentSelectables.ToList(), finger);
 			}
 			else
 			{
@@ -229,11 +251,11 @@ namespace Lean.Touch
 namespace Lean.Touch.Editor
 {
 	using UnityEditor;
-	using TARGET = LeanSelectionBox;
+	using TARGET = SelectionBox;
 
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(TARGET))]
-	public class LeanSelectionBox_Editor : CwEditor
+	public class SelectionBox_Editor : CwEditor
 	{
 		protected override void OnInspector()
 		{

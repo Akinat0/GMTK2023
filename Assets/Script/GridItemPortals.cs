@@ -33,7 +33,7 @@ public class GridItemPortals : MonoBehaviour
 
         Quaternion rotation = portals.Count > 0 
             ? Quaternion.Euler(0, 0, 90 * (int)portals[0]) 
-            : Quaternion.identity;
+            : spriteRenderer.transform.rotation;
         
         switch (item.PortalsCount)
         {

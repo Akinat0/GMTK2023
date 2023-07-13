@@ -21,19 +21,42 @@ public class GridItem : MonoBehaviour
     
     [SerializeField] ParamsContainer paramsContainer;
     [SerializeField] DungeonMultiplierOperation dungeonOperation;
+    
 
+    #region components
+    
     GridItemPortals gridItemPortals;
 
     GridItemPortals GridItemPortals => gridItemPortals ? gridItemPortals : gridItemPortals = GetComponent<GridItemPortals>();
 
     GridItemAlpha gridItemAlpha;
     GridItemAlpha GridItemAlpha => gridItemAlpha ? gridItemAlpha : gridItemAlpha = GetComponent<GridItemAlpha>();
-    
 
+    LeanDragTranslateAlong LeanDragTranslateAlong { get; set; }
+
+    public LeanSelectableByFinger LeanSelectableByFinger { get; private set; }
+
+
+    #endregion
+    
     public int X { get; set; }
     public int Y { get; set; }
 
     public bool IsOnGrid { get; private set; }
+
+    bool isMovable;
+    public bool IsMovable
+    {
+        get => isMovable;
+        set
+        {
+            if(isMovable == value)
+                return;
+
+            isMovable = value;
+            LeanDragTranslateAlong.enabled = isMovable;
+        }
+    }
 
     public ParamsContainer Params
     {
@@ -48,8 +71,7 @@ public class GridItem : MonoBehaviour
     }
 
     public bool IsRed { get; set; }
-
-    [SerializeField]
+    
     int portalsCount;
     
     public int PortalsCount
@@ -84,9 +106,7 @@ public class GridItem : MonoBehaviour
     }
 
     protected GridController Grid { get; set; }
-
-    Vector3 cachedPos;
-
+    
     public void AttachItem(GridController grid, int x, int y)
     {
         IsOnGrid = true;
@@ -123,48 +143,38 @@ public class GridItem : MonoBehaviour
             _ => null
         };
     }
-    
-    
-    void Update()
+
+
+    void Awake()
     {
-        bool isEnabled =
-            !GameScene.Instance.started
-            && (GameScene.Instance.character == null || GameScene.Instance.character.ActiveRoom != this);
-        
-        GetComponent<LeanDragTranslateAlong>().enabled = isEnabled;
-        GetComponent<LeanSelectableByFinger>().enabled = isEnabled;
+        LeanDragTranslateAlong = GetComponent<LeanDragTranslateAlong>();
+        LeanSelectableByFinger = GetComponent<LeanSelectableByFinger>();
+
+        IsMovable = true;
     }
-    
+
     void OnEnable()
     {
-        GetComponent<LeanSelectableByFinger>().OnSelectedFinger.AddListener(OnSelectedFingerHandler);
-        GetComponent<LeanSelectableByFinger>().OnSelectedFingerUp.AddListener(OnSelectedFingerUpHandler);
+        LeanSelectableByFinger.OnSelectedFinger.AddListener(OnSelectedFingerHandler);
+        LeanSelectableByFinger.OnSelectedFingerUp.AddListener(OnSelectedFingerUpHandler);
     }
     
     void OnDisable()
     {
-        GetComponent<LeanSelectableByFinger>().OnSelectedFinger.RemoveListener(OnSelectedFingerHandler);
-        GetComponent<LeanSelectableByFinger>().OnSelectedFingerUp.RemoveListener(OnSelectedFingerUpHandler);
+        LeanSelectableByFinger.OnSelectedFinger.RemoveListener(OnSelectedFingerHandler);
+        LeanSelectableByFinger.OnSelectedFingerUp.RemoveListener(OnSelectedFingerUpHandler);
     }
     
     void OnSelectedFingerHandler(LeanFinger finger)
     {
-        if(GridItemAlpha != null)
-            GridItemAlpha.SetAlpha(0.4f);
-        
-        Grid.DetachItem(X, Y); //detach this
+        if(Grid != null)
+            Grid.InvokeOnSelectFingerDown(this);
     }
-
+    
     void OnSelectedFingerUpHandler(LeanFinger finger)
     {
-        if(GridItemAlpha != null)
-            GridItemAlpha.SetAlpha(1);
-        
-        if (!Grid.TryGetCellCoordinates(transform.position, out int x, out int y)
-            || !Grid.TryPlaceItem(this, x, y))
-        {
-            Grid.TryPlaceItem(this, X, Y);
-        }
+        if(Grid != null)
+            Grid.InvokeOnSelectFingerUp(this);
     }
 
     public void DisableItemContent()
@@ -190,14 +200,13 @@ public class GridItem : MonoBehaviour
     {
         LeanDragTranslateAlong drag = GetComponent<LeanDragTranslateAlong>();
         drag.ScreenDepth.Conversion = LeanScreenDepth.ConversionType.PlaneIntercept;
-        drag.Damping = 10;
+        drag.Damping = 15;
 
     }
 #endif
     
     public void MarkAsNotValid()
     {
-        SoundManager.PlaySound("wrong"); //fix activating all at same time
         transform.DOComplete();
         transform.DOPunchScale(Vector3.one * 0.3f, 1, 5);
     }

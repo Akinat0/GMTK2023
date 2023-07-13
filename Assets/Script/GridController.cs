@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Lean.Common;
+using Lean.Touch;
 using UnityEngine;
 
 public class GridController : MonoBehaviour
@@ -12,11 +14,15 @@ public class GridController : MonoBehaviour
 
     [SerializeField] GridTile gridTilePrefab;
     
+    public event Action<GridItem> OnSelectFingerDown;
+    public event Action<GridItem> OnSelectFingerUp;
+        
     LeanPlane plane;
     GridItem[] items;
 
     public int Width => gridWidth;
     public int Height => gridHeight;
+    
 
     public IReadOnlyCollection<GridItem> Items => items;
 
@@ -41,8 +47,7 @@ public class GridController : MonoBehaviour
 
         plane.SnapX = cellSize;
         plane.SnapY = cellSize;
-        
-        
+
         plane.MinX = 0;
         plane.MaxX = (gridHeight - 1) * cellSize;
         plane.MinY = 0;
@@ -52,7 +57,7 @@ public class GridController : MonoBehaviour
         {
             for (int j = 0; j < gridHeight; j++)
             {
-                GridTile gridTile = Instantiate(gridTilePrefab, new Vector2(i * cellSize, j * cellSize), Quaternion.identity);
+                GridTile gridTile = Instantiate(gridTilePrefab, new Vector3(i * cellSize, j * cellSize, 2), Quaternion.identity);
                 gridTile.Init(i, j, this);
             }
         }
@@ -67,10 +72,15 @@ public class GridController : MonoBehaviour
         cameraBounds.size = new Vector3(gridWidth * cellSize, gridWidth * cellSize, 10000) - camSize * 0.9f + new Vector3(camSize.x * 0.2f, 0, 0);
 
         items = new GridItem[gridHeight * gridWidth];
+
+        // itemsMovable = new BitArray(gridHeight * gridWidth, true);
     }
 
     public bool IsBusyCell(int x, int y)
     {
+        if (!IsCellOnGrid(x, y))
+            return false;
+        
         return items[GetCellIndex(x, y)] != null;
     }
 
@@ -81,7 +91,7 @@ public class GridController : MonoBehaviour
         GridItem item = items[index];
         item.DetachItem();
         items[index] = null;
-        UpdateItemPortals(item);
+        UpdateNeighbourPortals(item);
         return item;
     }
 
@@ -98,7 +108,7 @@ public class GridController : MonoBehaviour
         items[GetCellIndex(x, y)] = item;
         
         item.UpdatePortals();
-        UpdateItemPortals(item);
+        UpdateNeighbourPortals(item);
 
         TryGetCellPosition(x, y, out Vector3 pos);
 
@@ -107,7 +117,7 @@ public class GridController : MonoBehaviour
         return true;
     }
 
-    void UpdateItemPortals(GridItem item)
+    void UpdateNeighbourPortals(GridItem item)
     {
         foreach (var direction in GridItem.Neighbours)
         {
@@ -120,8 +130,8 @@ public class GridController : MonoBehaviour
     
     public bool TryGetCellCoordinates(Vector3 pos, out int x, out int y)
     {
-        x = (int) (pos.x / cellSize + cellSize / 2);
-        y = (int) (pos.y / cellSize + cellSize / 2);
+        x = Mathf.FloorToInt(pos.x / cellSize + cellSize / 2);
+        y = Mathf.FloorToInt(pos.y / cellSize + cellSize / 2);
 
         if (x < 0 || y < 0 || x >= gridWidth || y >= gridHeight)
             return false;
@@ -157,6 +167,31 @@ public class GridController : MonoBehaviour
     public GridItem GetCellItem(int x, int y)
     {
         return IsCellOnGrid(x, y) ? items[GetCellIndex(x, y)] : null;
+    }
+    
+    public void SetMovable(int x, int y, bool isMovable)
+    {
+        items[GetCellIndex(x, y)].IsMovable = isMovable;
+    }
+
+    public void SetMovableAll(bool isMovable)
+    {
+        if(items == null || items.Length == 0)
+            return;
+        
+        foreach (var item in items.Where(item => item != null))
+            item.IsMovable = isMovable;
+        
+    }
+
+    public void InvokeOnSelectFingerDown(GridItem gridItem)
+    {
+        OnSelectFingerDown?.Invoke(gridItem);
+    }
+    
+    public void InvokeOnSelectFingerUp(GridItem gridItem)
+    {
+        OnSelectFingerUp?.Invoke(gridItem);
     }
 
 }
