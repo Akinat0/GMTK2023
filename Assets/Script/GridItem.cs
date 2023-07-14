@@ -119,7 +119,7 @@ public class GridItem : MonoBehaviour
         transform.DOComplete();
         transform.DOPunchScale(Vector3.one * -0.2f, 0.4f, 0);
 
-        SoundManager.PlaySound("drop");
+        SoundManager.PlaySound("placed");
     }
 
     public void DetachItem()

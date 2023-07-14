@@ -56,8 +56,6 @@ public class Character : MonoBehaviour
             room.DungeonOperation.Apply(Dungeon);
             runtimeParamsContainer.Apply(room.Params, Dungeon);
 
-            // Debug.Log(room.Params.Hp * Dungeon.Multiplier);
-
             if (room.Params.Hp != 0)
             {
                 string toDisplay = room.Params.Hp > 0 ? "+" + room.Params.Hp * Dungeon.Multiplier : room.Params.Hp * Dungeon.Multiplier + "";
