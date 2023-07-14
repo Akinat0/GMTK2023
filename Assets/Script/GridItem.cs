@@ -200,7 +200,7 @@ public class GridItem : MonoBehaviour
     {
         LeanDragTranslateAlong drag = GetComponent<LeanDragTranslateAlong>();
         drag.ScreenDepth.Conversion = LeanScreenDepth.ConversionType.PlaneIntercept;
-        drag.Damping = 15;
+        drag.Damping = 20;
 
     }
 #endif

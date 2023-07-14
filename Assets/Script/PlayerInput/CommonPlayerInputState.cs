@@ -63,9 +63,21 @@ public class CommonPlayerInputState : PlayerInputState
             return;
         
         if (!PlayerInput.Grid.TryGetCellCoordinates(item.transform.position, out int x, out int y)
-            || !PlayerInput.Grid.TryPlaceItem(item, x, y))
+            || !PlayerInput.Grid.TryPlaceItem(item, x, y)) //place successful
         {
-            PlayerInput.Grid.TryPlaceItem(item, item.X, item.Y);
+            if (PlayerInput.Grid.IsCellOnGrid(x, y))
+            {
+                //swap items
+                GridItem busyItem = PlayerInput.Grid.DetachItem(x, y); //detach busy cell
+                PlayerInput.Grid.TryPlaceItem(busyItem, item.X, item.Y); //place busy item
+                PlayerInput.Grid.TryPlaceItem(item, x, y); //place new item
+                
+            }
+            else
+            {
+                PlayerInput.Grid.TryPlaceItem(item, item.X, item.Y); //bring item back
+            }
+            
         }
     }
 }
