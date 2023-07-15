@@ -150,6 +150,8 @@ public class GridItem : MonoBehaviour
         LeanDragTranslateAlong = GetComponent<LeanDragTranslateAlong>();
         LeanSelectableByFinger = GetComponent<LeanSelectableByFinger>();
 
+        gameObject.AddComponent<GridSelectableDragSound>();
+
         IsMovable = true;
     }
 
