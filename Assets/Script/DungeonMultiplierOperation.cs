@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public struct DungeonMultiplierOperation
 {
-    enum Operation
+    public enum Operation
     {
         None, 
         Multiply,
@@ -18,6 +18,9 @@ public struct DungeonMultiplierOperation
 
     [SerializeField] Operation operation;
     [SerializeField] float value;
+
+    public Operation Operator => operation;
+    public float Value => value;
 
     public void Apply(Dungeon dungeon)
     {

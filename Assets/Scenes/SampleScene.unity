@@ -2694,6 +2694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 1709548123}
   characterPrefab: {fileID: 504183511835787994, guid: 670fe6ef2bd9a433eafae99ea11437c7, type: 3}
+  gridItemPrefab: {fileID: 2048240960091667995, guid: f0d1fc950436549bf9d3868d35c910cd, type: 3}
   levelConfig:
   - {fileID: 11400000, guid: 4433e6f3b08cb40bbb43bf592e535ee5, type: 2}
   - {fileID: 11400000, guid: 6a78e14582cfb4e40bbe0964f67fe294, type: 2}

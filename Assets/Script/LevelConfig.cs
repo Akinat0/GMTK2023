@@ -9,7 +9,6 @@ public class LevelConfig : ScriptableObject
     [Serializable]
     public class Entrance
     {
-        public GridItem item;
         public DungeonMultiplierOperation operation;
         public ParamsContainer paramsContainer;
         public int portalsCount = 2;

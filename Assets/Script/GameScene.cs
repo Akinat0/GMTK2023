@@ -13,6 +13,7 @@ public class GameScene : MonoBehaviour
 
     [SerializeField] GridController grid;
     [SerializeField] Character characterPrefab;
+    [SerializeField] GridItem gridItemPrefab;
     [SerializeField] LevelConfig[] levelConfig;
     [SerializeField] LeanConstrainToCollider cameraConstraint;
 
@@ -60,7 +61,7 @@ public class GameScene : MonoBehaviour
         
         foreach (var tileEntrance in config.AllowedTiles)
         {
-            GridItem item = Instantiate(tileEntrance.item);
+            GridItem item = Instantiate(gridItemPrefab);
             item.DungeonOperation = tileEntrance.operation; 
             item.Params = tileEntrance.paramsContainer;
             item.IsRed = tileEntrance.isRed;

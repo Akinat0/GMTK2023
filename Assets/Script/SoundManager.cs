@@ -1,9 +1,14 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour
 {
     public static AudioClip Pick, Drop, Heal, Walk, Wrong, Placed, Tile;
     static AudioSource audioSrc;
+
+    static readonly List<string> Queue = new List<string>();
 
     void Awake()
     {
@@ -17,7 +22,23 @@ public class SoundManager : MonoBehaviour
         audioSrc = GetComponent<AudioSource>();
     }
 
+    void LateUpdate()
+    {
+        foreach (var clip in Queue)
+            PlaySoundInternal(clip);
+        
+        Queue.Clear();
+    }
+
     public static void PlaySound(string clip)
+    {
+        if(Queue.Contains(clip))
+            return;
+        
+        Queue.Add(clip);
+    } 
+    
+    static void PlaySoundInternal(string clip)
     {
         switch (clip)
         {
