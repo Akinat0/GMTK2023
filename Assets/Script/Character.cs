@@ -18,7 +18,22 @@ public class Character : MonoBehaviour
     readonly HashSet<GridItem> visitedGrids = new ();
     readonly Stack<GridItem> history = new ();
 
-    public GridItem ActiveRoom { get; private set; }
+
+    GridItem activeRoom;
+
+    public GridItem ActiveRoom
+    {
+        get => activeRoom;
+        set
+        {
+            if (activeRoom != null && activeRoom != value)
+                activeRoom.LeanSelectableByFinger.enabled = true; // enable old room
+            
+            activeRoom = value;
+            
+            activeRoom.LeanSelectableByFinger.enabled = false; //disable new room
+        }
+    }
 
     Dungeon Dungeon { get; set; }
     GridItem StartRoom { get; set; }
@@ -32,7 +47,7 @@ public class Character : MonoBehaviour
         runtimeParamsContainer = new ParamsContainer(paramsContainer);
     }
 
-    public void StartRun(Dungeon dungeon, GridItem startRoom, Action onSuccess, Action onFail)
+    public void StartRun(Dungeon dungeon, Action onSuccess, Action onFail)
     {
         history.Clear();
         visitedGrids.Clear();
@@ -41,9 +56,12 @@ public class Character : MonoBehaviour
         OnFail = onFail;
         
         Dungeon = dungeon;
-        StartRoom = startRoom;
 
-        BeginTheRoom(startRoom, null);
+        if (GameScene.Grid.TryGetCellCoordinates(transform.position, out int x, out int y))
+            StartRoom = GameScene.Grid.GetCellItem(x, y);
+        
+
+        BeginTheRoom(StartRoom, null);
     }
 
     void BeginTheRoom(GridItem room, GridItem prevRoom)
@@ -62,7 +80,7 @@ public class Character : MonoBehaviour
                 Color toDisplayColor = room.Params.Hp > 0 ? green : red; // change to palette colors
                 damage.text = toDisplay;
                 damage.color = toDisplayColor;
-                damage.transform.DOPunchScale(Vector3.one * 0.3f, 0.3f, 0); //idk if this one working or not
+                damage.transform.DOPunchScale(Vector3.one * 0.3f, 0.5f, 0); //idk if this one working or not
             }
             else damage.text = null;
 
@@ -72,7 +90,7 @@ public class Character : MonoBehaviour
                 return;
             }
             
-            if (room.PortalsCount == 1 && room != StartRoom)
+            if (room.NeighboursCount == 1 && room != StartRoom)
             {
                 OnSuccess?.Invoke();
                 return;
@@ -118,12 +136,8 @@ public class Character : MonoBehaviour
             BeginTheRoom(nextRoom, room);
         }
         
-        if(ActiveRoom != null)
-            ActiveRoom.LeanSelectableByFinger.enabled = true; // enable old room
-        
         ActiveRoom = room;
-        ActiveRoom.LeanSelectableByFinger.enabled = false; //disable new room
-        
+
         Dungeon.RoomsCount++;
         
         Sequence sequence = DOTween.Sequence();

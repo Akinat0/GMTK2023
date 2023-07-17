@@ -42,6 +42,8 @@ public class GridItem : MonoBehaviour
     public int X { get; set; }
     public int Y { get; set; }
 
+    public int NeighboursCount => Neighbours.Select(GetNeighbour).Count(neighbour => neighbour != null);
+    
     public bool IsOnGrid { get; private set; }
 
     bool isMovable;
@@ -84,6 +86,7 @@ public class GridItem : MonoBehaviour
         }
     }
 
+
     public bool IsValid
     {
         get
@@ -91,17 +94,13 @@ public class GridItem : MonoBehaviour
             if (IsRed && Neighbours.Select(GetNeighbour).Any(neighbour => neighbour != null && neighbour.IsRed))
                 return false;
                 
-            int counter = 0;
+            int count = NeighboursCount;
+
+            //special case
+            if (PortalsCount == 2)
+                return count is 1 or 2;
             
-            foreach (var neighbour in Neighbours)
-            {
-                var item = GetNeighbour(neighbour);
-
-                if (item != null)
-                    counter++;
-            }
-
-            return counter == PortalsCount;
+            return PortalsCount == count;
         }
     }
 

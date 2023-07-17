@@ -95,7 +95,7 @@ public class GridController : MonoBehaviour
         return item;
     }
 
-    public bool TryPlaceItem(GridItem item, int x, int y)
+    public bool TryPlaceItem(GridItem item, int x, int y, Action onComplete = null)
     {
         if (IsBusyCell(x, y))
             return false;
@@ -112,7 +112,7 @@ public class GridController : MonoBehaviour
 
         TryGetCellPosition(x, y, out Vector3 pos);
 
-        item.transform.DOMove(pos, 0.2f);
+        item.transform.DOMove(pos, 0.2f).OnComplete(() => onComplete?.Invoke());
 
         return true;
     }

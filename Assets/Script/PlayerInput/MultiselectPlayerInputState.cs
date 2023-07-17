@@ -67,7 +67,8 @@ class MultiselectPlayerInputState : PlayerInputState
             
             if (selectable != selected)
             {
-                selectable.transform.DOComplete();
+                // we should stop scale animation on main selectable
+                selectable.transform.DOComplete(); 
                 selectable.transform.parent = selected.transform;
                 selectable.GridItemPortals.IsForceOutlineEnabled = true;
             }

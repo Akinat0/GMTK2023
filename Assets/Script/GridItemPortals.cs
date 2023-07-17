@@ -69,6 +69,13 @@ public class GridItemPortals : LeanSelectableBehaviour
                 break;
             case 2:
 
+                //hack to support single portal
+                if (portals.Count == 1)
+                {
+                    sprite = sprite0001;
+                    break;
+                }
+                
                 bool isTurn = false;
                 
                 if (portals.Count == 2)
