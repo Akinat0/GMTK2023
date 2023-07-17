@@ -68,7 +68,7 @@ public class SoundManager : MonoBehaviour
                 break;
             case "tile":
                 audioSrc.pitch = 1f + Random.Range(-0.05f, 0.05f);
-                audioSrc.PlayOneShot(Tile, 0.1f);
+                audioSrc.PlayOneShot(Tile, 1f);
                 break;
         }
     }

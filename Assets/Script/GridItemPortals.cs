@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
+using Lean.Common;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class GridItemPortals : MonoBehaviour
+public class GridItemPortals : LeanSelectableBehaviour
 {
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] SpriteRenderer outlineRenderer;
     [SerializeField] GridItem item;
 
     [SerializeField] Sprite sprite0001;
@@ -13,7 +16,31 @@ public class GridItemPortals : MonoBehaviour
     [SerializeField] Sprite sprite0111;
     [SerializeField] Sprite sprite1111;
 
-    readonly List<Direction> portals = new List<Direction>(4);
+    readonly List<Direction> portals = new (4);
+
+
+    
+    bool isForceOutlineEnabled;
+    public bool IsForceOutlineEnabled
+    {
+        get => isForceOutlineEnabled;
+        set
+        {
+            if (isForceOutlineEnabled == value)
+                return;
+
+            isForceOutlineEnabled = value;
+            UpdateOutlines();
+        }
+
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        outlineRenderer.enabled = false;
+    }
 
     public void UpdatePortals()
     {
@@ -68,5 +95,31 @@ public class GridItemPortals : MonoBehaviour
         spriteRenderer.sprite = sprite;
         spriteRenderer.transform.rotation = rotation;
         spriteRenderer.color = item.IsRed ? new Color(0.84f, 0.34f, 0.26f) : new Color(0.58f, 0.72f, 0.35f);
+
+        outlineRenderer.sprite = sprite;
+        outlineRenderer.transform.rotation = rotation;
+    }
+
+    protected override void OnSelected(LeanSelect select)
+    {
+        base.OnSelected(select);
+        UpdateOutlines();
+    }
+    
+    protected override void OnDeselected(LeanSelect select)
+    {
+        base.OnDeselected(select);
+        UpdateOutlines();
+    }
+
+    void UpdateOutlines()
+    {
+        if (IsForceOutlineEnabled)
+        {
+            outlineRenderer.enabled = true;
+            return;
+        }
+
+        outlineRenderer.enabled = Selectable.IsSelected;
     }
 }

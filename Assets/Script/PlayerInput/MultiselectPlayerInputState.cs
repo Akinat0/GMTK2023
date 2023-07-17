@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Lean.Common;
 using UnityEngine;
 
@@ -54,8 +55,6 @@ class MultiselectPlayerInputState : PlayerInputState
     
     void HandleSelected(LeanSelectable leanSelected)
     {
-        // Debug.Log($"Select {leanSelected.gameObject.name}");
-     
         PlayerInput.SelectByFinger.DeselectWithFingers = true;
         selected = leanSelected.GetComponent<GridItem>();
         
@@ -64,10 +63,15 @@ class MultiselectPlayerInputState : PlayerInputState
 
         foreach (var selectable in selectableItems)
         {
-            if (selectable != selected)
-                selectable.transform.parent = selected.transform;
-
             PlayerInput.Grid.DetachItem(selectable.X, selectable.Y);
+            
+            if (selectable != selected)
+            {
+                selectable.transform.DOComplete();
+                selectable.transform.parent = selected.transform;
+                selectable.GridItemPortals.IsForceOutlineEnabled = true;
+            }
+
         }
     }
 
@@ -77,6 +81,8 @@ class MultiselectPlayerInputState : PlayerInputState
         
         if(deselectedItem == null || deselectedItem != selected)
             return;
+
+        deselectedItem.transform.DOComplete();
         
         bool isValid = selectableItems.All(
             item => PlayerInput.Grid.TryGetCellCoordinates(item.transform.position, out int x, out int y) 
@@ -104,6 +110,9 @@ class MultiselectPlayerInputState : PlayerInputState
             }
         }
 
+        foreach (GridItem selectable in selectableItems)
+            selectable.GridItemPortals.IsForceOutlineEnabled = false;
+        
         
         SetState<CommonPlayerInputState>();
     }

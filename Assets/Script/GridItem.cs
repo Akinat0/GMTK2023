@@ -27,7 +27,7 @@ public class GridItem : MonoBehaviour
     
     GridItemPortals gridItemPortals;
 
-    GridItemPortals GridItemPortals => gridItemPortals ? gridItemPortals : gridItemPortals = GetComponent<GridItemPortals>();
+    public GridItemPortals GridItemPortals => gridItemPortals ? gridItemPortals : gridItemPortals = GetComponent<GridItemPortals>();
 
     GridItemAlpha gridItemAlpha;
     GridItemAlpha GridItemAlpha => gridItemAlpha ? gridItemAlpha : gridItemAlpha = GetComponent<GridItemAlpha>();

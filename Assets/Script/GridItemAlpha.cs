@@ -15,15 +15,15 @@ public class GridItemAlpha : LeanSelectableBehaviour
         UpdateAlpha();
     }
     
-    protected override void OnSelected(LeanSelect select)
-    {
-        UpdateAlpha();
-    }
-
-    protected override void OnDeselected(LeanSelect select)
-    {
-        UpdateAlpha();
-    }
+    // protected override void OnSelected(LeanSelect select)
+    // {
+    //     UpdateAlpha();
+    // }
+    //
+    // protected override void OnDeselected(LeanSelect select)
+    // {
+    //     UpdateAlpha();
+    // }
 
     public void UpdateAlpha()
     {
