@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: -6417802803606926094}
   - component: {fileID: -6412181343229142571}
   m_Layer: 0
-  m_Name: RoomDungeonModifier
+  m_Name: Room
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
