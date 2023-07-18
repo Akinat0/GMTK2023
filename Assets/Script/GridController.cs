@@ -22,14 +22,13 @@ public class GridController : MonoBehaviour
 
     public int Width => gridWidth;
     public int Height => gridHeight;
+    public float CellSize => cellSize;
     
 
     public IReadOnlyCollection<GridItem> Items => items;
 
     public LeanPlane Plane => plane;
     BoxCollider cameraBounds;
-
-    public BoxCollider CameraBounds => cameraBounds;
 
     public void Build(int width, int height)
     {
@@ -61,15 +60,6 @@ public class GridController : MonoBehaviour
                 gridTile.Init(i, j, this);
             }
         }
-
-        cameraBounds = gameObject.AddComponent<BoxCollider>();
-
-        Camera cam = Camera.main;
-        var camSize = new Vector3(cam.orthographicSize * 2 * cam.aspect, cam.orthographicSize * 2, 0);
-        
-        Vector3 gridSize = new Vector3(gridWidth * cellSize, gridHeight * cellSize, 0);
-        cameraBounds.center = gridSize / 2 - new Vector3(cellSize / 2, cellSize / 2) + new Vector3(camSize.x * 0.2f / 2, 0, 0);
-        cameraBounds.size = new Vector3(gridWidth * cellSize, gridWidth * cellSize, 10000) - camSize * 0.9f + new Vector3(camSize.x * 0.2f, 0, 0);
 
         items = new GridItem[gridHeight * gridWidth];
 

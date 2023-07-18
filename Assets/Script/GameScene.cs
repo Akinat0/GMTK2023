@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
-using Lean.Common;
 using UnityEngine;
 using TMPro;
-using UnityEditor;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -17,7 +15,7 @@ public class GameScene : MonoBehaviour
     [SerializeField] Character characterPrefab;
     [SerializeField] GridItem gridItemPrefab;
     [SerializeField] LevelConfig[] levelConfig;
-    [SerializeField] LeanConstrainToCollider cameraConstraint;
+    [SerializeField] MainCamera mainCamera;
 
     Character character;
 
@@ -25,6 +23,7 @@ public class GameScene : MonoBehaviour
 
     public static GridController Grid => Instance != null ? Instance.grid : null;
     public static Character Character => Instance != null ? Instance.character : null;
+    public static MainCamera Camera => Instance != null ? Instance.mainCamera : null;
 
     public static event Action OnStartRun;
     public static event Action OnEndRun;
@@ -40,15 +39,14 @@ public class GameScene : MonoBehaviour
     bool started;
     int levelIndex;
 
-    void Start()
+    void Awake()
     {
         Instance = this;
-        Grid.Build(levelConfig[0].FieldSize.x, levelConfig[0].FieldSize.y);
-
-        cameraConstraint.Collider = Grid.CameraBounds;
+        Grid.Build(50, 50);
+        
         AddTiles(2, 2, SpawnCharacter);
 
-        multiplierField.transform.DOScale(Vector3.one * 1.1f, 2f).SetLoops(-1, LoopType.Yoyo);
+        multiplierField.transform.DOScale(Vector3.one * 1.07f, 2f).SetLoops(-1, LoopType.Yoyo);
         
         startButton.onClick.AddListener(StartGame);
     }
@@ -224,7 +222,7 @@ public class GameScene : MonoBehaviour
 
         HashSet<GridItem> checkedItems = new HashSet<GridItem>();
 
-        CheckItem(character.ActiveRoom, checkedItems);
+        CheckIsValidItem(character.ActiveRoom, checkedItems);
 
         foreach (GridItem separatedItem in grid.Items.Where(item => item != null && !checkedItems.Contains(item)))
         {
@@ -241,7 +239,7 @@ public class GameScene : MonoBehaviour
         return true;
     }
 
-    void CheckItem(GridItem item, HashSet<GridItem> checkedItems)
+    void CheckIsValidItem(GridItem item, HashSet<GridItem> checkedItems)
     {
         if (checkedItems.Contains(item))
             return; 
@@ -252,6 +250,6 @@ public class GameScene : MonoBehaviour
             .Where(neighbour => neighbour != null && !checkedItems.Contains(neighbour));
 
         foreach (var neighbour in neighbours)
-            CheckItem(neighbour, checkedItems);
+            CheckIsValidItem(neighbour, checkedItems);
     }
 }
