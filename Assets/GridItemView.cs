@@ -5,14 +5,12 @@ public class GridItemView : MonoBehaviour
 {
     [SerializeField] TextMeshPro modifierText;
     [SerializeField] SpriteRenderer spriteRenderer;
-    [SerializeField] GridItem item;
-
     [SerializeField] Sprite spriteDamage1;
     [SerializeField] Sprite spriteDamage2;
     [SerializeField] Sprite spriteDamage3;
     [SerializeField] Sprite spriteHeal5;
     
-    void Start()
+    public void Initialize(GridItem item)
     {
         spriteRenderer.enabled = true;
         

@@ -45,6 +45,8 @@ public struct DungeonMultiplierOperation
                 dungeon.Multiplier = Mathf.Sqrt(dungeon.Multiplier);
                 break;
         }
+
+        dungeon.Multiplier = Mathf.Max(dungeon.Multiplier, 1);
     }
 
     public override string ToString()
@@ -66,5 +68,21 @@ public struct DungeonMultiplierOperation
         }
 
         return string.Empty;
+    }
+    
+    
+    public bool Equals(DungeonMultiplierOperation other)
+    {
+        return operation == other.operation && value.Equals(other.value);
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is DungeonMultiplierOperation other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine((int)operation, value);
     }
 }

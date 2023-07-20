@@ -22,7 +22,6 @@ public class GridItem : MonoBehaviour
     [SerializeField] ParamsContainer paramsContainer;
     [SerializeField] DungeonMultiplierOperation dungeonOperation;
     
-
     #region components
     
     GridItemPortals gridItemPortals;
@@ -31,6 +30,9 @@ public class GridItem : MonoBehaviour
 
     GridItemAlpha gridItemAlpha;
     GridItemAlpha GridItemAlpha => gridItemAlpha ? gridItemAlpha : gridItemAlpha = GetComponent<GridItemAlpha>();
+    
+    GridItemView gridItemView;
+    GridItemView GridItemView => gridItemView ? gridItemView : gridItemView = GetComponent<GridItemView>();
 
     LeanDragTranslateAlong LeanDragTranslateAlong { get; set; }
 
@@ -63,13 +65,21 @@ public class GridItem : MonoBehaviour
     public ParamsContainer Params
     {
         get => paramsContainer;
-        set => paramsContainer = value;
+        set
+        {
+            paramsContainer = value;
+            GridItemView.Initialize(this);
+        }
     }
 
     public DungeonMultiplierOperation DungeonOperation
     {
         get => dungeonOperation;
-        set => dungeonOperation = value;
+        set
+        {
+            dungeonOperation = value;
+            GridItemView.Initialize(this);
+        }
     }
 
     public bool IsRed { get; set; }
@@ -133,6 +143,9 @@ public class GridItem : MonoBehaviour
     
     public GridItem GetNeighbour(Direction direction)
     {
+        if (Grid == null)
+            return null;
+        
         return direction switch
         {
             Direction.Right => Grid.GetCellItem(X + 1, Y),

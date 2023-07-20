@@ -184,7 +184,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: X2
+  m_text: x2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 63361a2ad8993414990e124fe0e6c6f9, type: 2}
   m_sharedMaterial: {fileID: 2397106234202964807, guid: 63361a2ad8993414990e124fe0e6c6f9, type: 2}
@@ -387,8 +387,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   paramsContainer:
     Hp: 0
-    Lvl: 0
-    Exp: 0
   dungeonOperation:
     operation: 1
     value: 2
@@ -438,7 +436,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modifierText: {fileID: 4947218198568120149}
   spriteRenderer: {fileID: 4728380216662804984}
-  item: {fileID: 2048240960091667995}
   spriteDamage1: {fileID: 2031764261, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   spriteDamage2: {fileID: -2129739705, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   spriteDamage3: {fileID: 1287238187, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
@@ -519,7 +516,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3076475571501197426}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -553,7 +550,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1287238187, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  m_Sprite: {fileID: -2129739705, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -603,7 +600,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8315810694593189453}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1

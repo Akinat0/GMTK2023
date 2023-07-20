@@ -1,25 +1,15 @@
-
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "LevelConfig", menuName = "LevelConfig")]
-public class LevelConfig : ScriptableObject
+namespace Script
 {
-    [Serializable]
-    public class Entrance
+    [CreateAssetMenu(fileName = "LevelConfig", menuName = "LevelConfig")]
+    public class LevelConfig : ScriptableObject
     {
-        public DungeonMultiplierOperation operation;
-        public ParamsContainer paramsContainer;
-        public int portalsCount = 2;
-        public bool isRed;
+        [SerializeField] TileSet startTileSet;
+        [SerializeField] TileSet[] randomTileSets;
+
+        public TileSet StartTileSet => startTileSet;
+        public IReadOnlyCollection<TileSet> RandomTileSets => randomTileSets;
     }
-
-    [SerializeField] Vector2Int fieldSize;
-    [SerializeField] Entrance[] allowedTiles;
-
-    public Vector2Int FieldSize => fieldSize;
-
-    public IReadOnlyCollection<Entrance> AllowedTiles => allowedTiles;
-
 }

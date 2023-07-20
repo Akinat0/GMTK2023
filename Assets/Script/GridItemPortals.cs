@@ -18,7 +18,8 @@ public class GridItemPortals : LeanSelectableBehaviour
 
     readonly List<Direction> portals = new (4);
 
-
+    public SpriteRenderer SpriteRenderer => spriteRenderer;
+    
     
     bool isForceOutlineEnabled;
     public bool IsForceOutlineEnabled

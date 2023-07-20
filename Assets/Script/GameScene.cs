@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Script;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -14,7 +15,7 @@ public class GameScene : MonoBehaviour
     [SerializeField] GridController grid;
     [SerializeField] Character characterPrefab;
     [SerializeField] GridItem gridItemPrefab;
-    [SerializeField] LevelConfig[] levelConfig;
+    [SerializeField] LevelConfig levelConfig;
     [SerializeField] MainCamera mainCamera;
 
     Character character;
@@ -29,10 +30,10 @@ public class GameScene : MonoBehaviour
     public static event Action OnEndRun;
 
     //UI DISPLAY
-    [SerializeField] TextMeshProUGUI displayHp, displayLvl;
+    [SerializeField] TextMeshProUGUI displayHp;
     [SerializeField] TextMeshProUGUI multiplierField;
     [SerializeField] TextMeshProUGUI[] roomsCountField;
-    [SerializeField] Slider sliderHp, sliderExp;
+    [SerializeField] Slider sliderHp;
     [SerializeField] GameObject win;
     [SerializeField] Button startButton;
 
@@ -44,7 +45,7 @@ public class GameScene : MonoBehaviour
         Instance = this;
         Grid.Build(50, 50);
         
-        AddTiles(2, 2, SpawnCharacter);
+        AddTiles(levelConfig.StartTileSet, 2, 2, SpawnCharacter);
 
         multiplierField.transform.DOScale(Vector3.one * 1.07f, 2f).SetLoops(-1, LoopType.Yoyo);
         
@@ -62,13 +63,9 @@ public class GameScene : MonoBehaviour
         character.ActiveRoom = startRoom;
     }
     
-    void AddTiles(int xOffset = 0, int yOffset = 0, Action onComplete = null)
+    void AddTiles(TileSet tileSet, int xOffset = 0, int yOffset = 0, Action onComplete = null)
     {
-        LevelConfig config = levelIndex < levelConfig.Length 
-            ? levelConfig[levelIndex] 
-            : levelConfig[Random.Range(0, levelConfig.Length)];
-
-        int count = config.AllowedTiles.Count;
+        int count = tileSet.AllowedTiles.Count;
 
         void OnComplete()
         {
@@ -78,7 +75,7 @@ public class GameScene : MonoBehaviour
                 onComplete?.Invoke();
         }
         
-        foreach (LevelConfig.Entrance tileEntrance in config.AllowedTiles)
+        foreach (TileSet.Entrance tileEntrance in tileSet.AllowedTiles)
             PlaceItem(tileEntrance, xOffset, yOffset, OnComplete);
         
         levelIndex++;
@@ -97,9 +94,7 @@ public class GameScene : MonoBehaviour
         // displayHp.text = $"HP:{character.runtimeParamsContainer.Hp:#.#}";
         displayHp.text = $"HP:{Mathf.Ceil(character.runtimeParamsContainer.Hp)}";
         sliderHp.value = character.runtimeParamsContainer.Hp/character.paramsContainer.Hp;
-
-        displayLvl.text = "LVL:" + character.runtimeParamsContainer.Lvl;
-        sliderExp.value = (float)character.runtimeParamsContainer.Exp / 10;
+        
 
         if (dungeon != null)
         {
@@ -125,7 +120,7 @@ public class GameScene : MonoBehaviour
         }
     }
 
-    void PlaceItem(LevelConfig.Entrance entrance, int xOffset = 0, int yOffset = 0, Action onComplete = null)
+    void PlaceItem(TileSet.Entrance entrance, int xOffset = 0, int yOffset = 0, Action onComplete = null)
     {
         for (int i = yOffset; i < grid.Height; i++)
         {
@@ -136,13 +131,13 @@ public class GameScene : MonoBehaviour
 
                 GridItem item = Instantiate(gridItemPrefab);
                 
-                item.DungeonOperation = entrance.operation; 
-                item.Params = entrance.paramsContainer;
-                item.IsRed = entrance.isRed;
+                item.DungeonOperation = entrance.Operation; 
+                item.Params = entrance.ParamsContainer;
+                item.IsRed = entrance.IsRed;
 
                 if (grid.TryPlaceItem(item, j, i, onComplete))
                 {
-                    item.PortalsCount = entrance.portalsCount;
+                    item.PortalsCount = entrance.PortalsCount;
                     return;
                 }
             }
@@ -192,7 +187,10 @@ public class GameScene : MonoBehaviour
         character.transform.DOScale(Vector3.one * 1.2f, 0.4f).SetLoops(-1, LoopType.Yoyo);
 
         started = false;
-        AddTiles();
+        
+        TileSet config = levelConfig.RandomTileSets.ElementAt(Random.Range(0, levelConfig.RandomTileSets.Count));
+        
+        AddTiles(config);
         
         OnEndRun?.Invoke();
     }
@@ -203,8 +201,6 @@ public class GameScene : MonoBehaviour
         character.transform.DOScale(Vector3.zero, 0.2f);
         win.SetActive(true);
         started = false;
-        
-        AddTiles();
     }
 
     bool CheckIsValid()
