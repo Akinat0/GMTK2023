@@ -189,8 +189,9 @@ public class GameScene : MonoBehaviour
         started = false;
         
         TileSet config = levelConfig.RandomTileSets.ElementAt(Random.Range(0, levelConfig.RandomTileSets.Count));
-        
-        AddTiles(config);
+
+        Vector2Int tilesOffset = GetTilesSpawnOffset();
+        AddTiles(config, tilesOffset.x, tilesOffset.y);
         
         OnEndRun?.Invoke();
     }
@@ -247,5 +248,15 @@ public class GameScene : MonoBehaviour
 
         foreach (var neighbour in neighbours)
             CheckIsValidItem(neighbour, checkedItems);
+    }
+
+    Vector2Int GetTilesSpawnOffset()
+    {
+        Vector2 leftBottomCorner = Camera.CameraRect.min;
+
+        if (!Grid.TryGetCellCoordinates(leftBottomCorner, out int x, out int y))
+            return Vector2Int.zero;
+
+        return new Vector2Int(x + 1, y + 1);
     }
 }

@@ -13,6 +13,10 @@ public class MainCamera : MonoBehaviour
     
     LeanConstrainToCollider cameraConstraint;
 
+    public Vector2 CameraSize => new Vector2(Camera.orthographicSize * 2 * Camera.aspect, Camera.orthographicSize * 2);
+    public Rect CameraRect => new Rect((Vector2)transform.position - CameraSize * 0.5f, CameraSize);
+
+
     void Awake()
     {
         Camera = GetComponent<Camera>();
@@ -25,7 +29,7 @@ public class MainCamera : MonoBehaviour
         
         cameraConstraint.Collider = cameraBounds;
 
-        CalculateCameraBounds();
+        CalculateCameraConstraintBound();
     }
 
     void Update()
@@ -40,13 +44,12 @@ public class MainCamera : MonoBehaviour
         float maxOrthographicSize = width * 0.5f / Camera.aspect;
 
         Camera.orthographicSize = Mathf.Clamp(Camera.orthographicSize + scrollDelta, 3, maxOrthographicSize);
-        CalculateCameraBounds();
+        CalculateCameraConstraintBound();
     }
 
-
-    void CalculateCameraBounds()
+    void CalculateCameraConstraintBound()
     {
-        Vector3 camSize = new Vector3(Camera.orthographicSize * 2 * Camera.aspect, Camera.orthographicSize * 2, 0);
+        Vector3 camSize = CameraSize;
         
         Vector3 gridSize = new Vector3(Grid.Width * Grid.CellSize, Grid.Height * Grid.CellSize, 0);
         cameraBounds.center = gridSize / 2 - new Vector3(Grid.CellSize / 2, Grid.CellSize / 2) + new Vector3(camSize.x * 0.2f / 2, 0, 0);
