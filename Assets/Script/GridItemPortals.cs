@@ -20,7 +20,6 @@ public class GridItemPortals : LeanSelectableBehaviour
 
     public SpriteRenderer SpriteRenderer => spriteRenderer;
     
-    
     bool isForceOutlineEnabled;
     public bool IsForceOutlineEnabled
     {
@@ -95,6 +94,7 @@ public class GridItemPortals : LeanSelectableBehaviour
             case 3:
                 sprite = sprite0111;
                 break;
+            case 0:
             case 4:
                 sprite = sprite1111;
                 break;
@@ -102,7 +102,8 @@ public class GridItemPortals : LeanSelectableBehaviour
 
         spriteRenderer.sprite = sprite;
         spriteRenderer.transform.rotation = rotation;
-        spriteRenderer.color = item.IsRed ? new Color(0.84f, 0.34f, 0.26f) : new Color(0.58f, 0.72f, 0.35f);
+        spriteRenderer.color = item.IsLockedOnGrid ? Color.gray : item.IsRed 
+            ? new Color(0.84f, 0.34f, 0.26f) : new Color(0.58f, 0.72f, 0.35f);
 
         outlineRenderer.sprite = sprite;
         outlineRenderer.transform.rotation = rotation;

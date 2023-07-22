@@ -131,6 +131,7 @@ public class GameScene : MonoBehaviour
 
                 GridItem item = Instantiate(gridItemPrefab);
                 
+                item.IsFireplace = entrance.IsFireplace;
                 item.DungeonOperation = entrance.Operation; 
                 item.Params = entrance.ParamsContainer;
                 item.IsRed = entrance.IsRed;
@@ -157,6 +158,8 @@ public class GameScene : MonoBehaviour
 
         if(!CheckIsValid())
             return;
+        
+        Grid.SetLockedOnGridAll(true);
 
         foreach (var item in Grid.Items.Where(item => item != null))
             item.ResetItem();

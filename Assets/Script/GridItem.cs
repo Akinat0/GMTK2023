@@ -36,8 +36,7 @@ public class GridItem : MonoBehaviour
 
     LeanDragTranslateAlong LeanDragTranslateAlong { get; set; }
 
-    public LeanSelectableByFinger LeanSelectableByFinger { get; private set; }
-
+    LeanSelectableByFinger LeanSelectableByFinger { get; set; }
 
     #endregion
     
@@ -58,7 +57,7 @@ public class GridItem : MonoBehaviour
                 return;
 
             isMovable = value;
-            LeanDragTranslateAlong.enabled = isMovable;
+            UpdateDragTranslate();
         }
     }
 
@@ -83,7 +82,9 @@ public class GridItem : MonoBehaviour
     }
 
     public bool IsRed { get; set; }
-    
+
+    public bool IsFireplace { get; set; }
+
     int portalsCount;
     
     public int PortalsCount
@@ -91,11 +92,31 @@ public class GridItem : MonoBehaviour
         get => portalsCount;
         set
         {
+            if(portalsCount == value)
+                return;
+            
             portalsCount = value;
             UpdatePortals();
         }
     }
 
+    bool isLockedOnGrid;
+    public bool IsLockedOnGrid
+    {
+        get => isLockedOnGrid;
+        set
+        {
+            if(isLockedOnGrid == value)
+                return;
+
+            isLockedOnGrid = value;
+            
+            UpdateDragTranslate();
+            UpdatePortals();
+            LeanSelectableByFinger.enabled = !isLockedOnGrid;
+        }
+    }
+    
 
     public bool IsValid
     {
@@ -127,6 +148,8 @@ public class GridItem : MonoBehaviour
 
         transform.DOComplete();
         transform.DOPunchScale(Vector3.one * -0.2f, 0.4f, 0);
+
+        PortalsCount = NeighboursCount;
 
         SoundManager.PlaySound("placed");
     }
@@ -194,13 +217,13 @@ public class GridItem : MonoBehaviour
     public void DisableItemContent()
     {
         if(GridItemAlpha != null)
-            GridItemAlpha.SetContentAlpha(0.3f);
+            GridItemAlpha.SetAlpha(0.3f);
     }
 
     public void ResetItem()
     {
         if(GridItemAlpha != null)
-            GridItemAlpha.SetContentAlpha(1);
+            GridItemAlpha.SetAlpha(1);
     }
     
     public virtual void Destroy()
@@ -227,7 +250,14 @@ public class GridItem : MonoBehaviour
 
     public void UpdatePortals()
     {
+        PortalsCount = NeighboursCount;
+        
         if(GridItemPortals != null)
             GridItemPortals.UpdatePortals();
+    }
+
+    void UpdateDragTranslate()
+    {
+        LeanDragTranslateAlong.enabled = !isLockedOnGrid && isMovable;
     }
 }

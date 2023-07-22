@@ -9,11 +9,25 @@ public class GridItemView : MonoBehaviour
     [SerializeField] Sprite spriteDamage2;
     [SerializeField] Sprite spriteDamage3;
     [SerializeField] Sprite spriteHeal5;
+    [SerializeField] Sprite spriteFireplace;
+    [SerializeField] Sprite spriteSqrt;
     
     public void Initialize(GridItem item)
     {
         spriteRenderer.enabled = true;
-        
+        modifierText.enabled = false;
+
+        if (item.IsFireplace)
+        {
+            spriteRenderer.sprite = spriteFireplace;
+            return;
+        }
+
+        if (item.DungeonOperation.Operator == DungeonMultiplierOperation.Operation.Sqrt)
+        {
+            spriteRenderer.sprite = spriteSqrt;
+            return;
+        }
         
         switch (item.Params.Hp)
         {

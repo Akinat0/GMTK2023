@@ -23,6 +23,7 @@ public static class RoomPreview
         
         GridItem item = Object.Instantiate(GridItem);
         
+        item.IsFireplace = target.IsFireplace;
         item.IsRed = target.IsRed;
         item.Params = target.ParamsContainer;
         item.DungeonOperation = target.Operation;

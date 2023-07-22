@@ -13,11 +13,13 @@ public class TileSet : ScriptableObject
         public ParamsContainer ParamsContainer => paramsContainer;
         public int PortalsCount => portalsCount;
         public bool IsRed => isRed;
+        public bool IsFireplace => isFireplace;
 
         [SerializeField] DungeonMultiplierOperation operation;
         [SerializeField] ParamsContainer paramsContainer;
         [SerializeField] int portalsCount = 2;
         [SerializeField] bool isRed;
+        [SerializeField] bool isFireplace;
         
         
         protected bool Equals(Entrance other)
@@ -25,7 +27,8 @@ public class TileSet : ScriptableObject
             return operation.Equals(other.operation) 
                    && paramsContainer.Equals(other.paramsContainer) 
                    && portalsCount == other.portalsCount 
-                   && isRed == other.isRed;
+                   && isRed == other.isRed
+                   && isFireplace == other.isFireplace;
         }
 
         public override bool Equals(object obj)
@@ -38,7 +41,7 @@ public class TileSet : ScriptableObject
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(operation, paramsContainer, portalsCount, isRed);
+            return HashCode.Combine(operation, paramsContainer, portalsCount, isRed, isFireplace);
         }
     }
     

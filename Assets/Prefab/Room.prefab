@@ -440,6 +440,8 @@ MonoBehaviour:
   spriteDamage2: {fileID: -2129739705, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   spriteDamage3: {fileID: 1287238187, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
   spriteHeal5: {fileID: 1755134081, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  spriteFireplace: {fileID: -1299153985, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
+  spriteSqrt: {fileID: 958741526, guid: 4ddb440e6729c4c19b6615167f988f7a, type: 3}
 --- !u!114 &-6417802803606926094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,11 +474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d79a7ea702443dab2772251ca14d635, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderers:
-  - {fileID: 4314888415826823322}
-  textRenderers:
-  - {fileID: 4947218198568120149}
-  contentRenderer: {fileID: 1825082108399746583}
+  spriteRenderer: {fileID: 4728380216662804984}
+  textRenderer: {fileID: 4947218198568120149}
 --- !u!1 &3076475571501197426
 GameObject:
   m_ObjectHideFlags: 0

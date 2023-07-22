@@ -19,21 +19,7 @@ public class Character : MonoBehaviour
     readonly Stack<GridItem> history = new ();
 
 
-    GridItem activeRoom;
-
-    public GridItem ActiveRoom
-    {
-        get => activeRoom;
-        set
-        {
-            if (activeRoom != null && activeRoom != value)
-                activeRoom.LeanSelectableByFinger.enabled = true; // enable old room
-            
-            activeRoom = value;
-            
-            activeRoom.LeanSelectableByFinger.enabled = false; //disable new room
-        }
-    }
+    public GridItem ActiveRoom { get; set; }
 
     Dungeon Dungeon { get; set; }
     GridItem StartRoom { get; set; }
@@ -90,7 +76,7 @@ public class Character : MonoBehaviour
                 return;
             }
             
-            if (room.NeighboursCount == 1 && room != StartRoom)
+            if (room.IsFireplace && room != StartRoom)
             {
                 OnSuccess?.Invoke();
                 return;
