@@ -25,6 +25,7 @@ public class GameScene : MonoBehaviour
     public static GridController Grid => Instance != null ? Instance.grid : null;
     public static Character Character => Instance != null ? Instance.character : null;
     public static MainCamera Camera => Instance != null ? Instance.mainCamera : null;
+    public static int UnlockableCount { get; set; }
 
     public static event Action OnStartRun;
     public static event Action OnEndRun;
@@ -32,13 +33,13 @@ public class GameScene : MonoBehaviour
     //UI DISPLAY
     [SerializeField] TextMeshProUGUI displayHp;
     [SerializeField] TextMeshProUGUI multiplierField;
+    [SerializeField] TextMeshProUGUI unlockablesCountField;
     [SerializeField] TextMeshProUGUI[] roomsCountField;
     [SerializeField] Slider sliderHp;
     [SerializeField] GameObject win;
     [SerializeField] Button startButton;
 
     bool started;
-    int levelIndex;
 
     void Awake()
     {
@@ -61,6 +62,7 @@ public class GameScene : MonoBehaviour
         character.transform.localScale = Vector3.zero;
         character.transform.DOScale(Vector3.one, 0.2f);
         character.ActiveRoom = startRoom;
+        Grid.SetLockedOnGrid(startRoom.X, startRoom.Y, true);
     }
     
     void AddTiles(TileSet tileSet, int xOffset = 0, int yOffset = 0, Action onComplete = null)
@@ -77,8 +79,6 @@ public class GameScene : MonoBehaviour
         
         foreach (TileSet.Entrance tileEntrance in tileSet.AllowedTiles)
             PlaceItem(tileEntrance, xOffset, yOffset, OnComplete);
-        
-        levelIndex++;
     }
 
     int roomsCount = 0;
@@ -87,6 +87,7 @@ public class GameScene : MonoBehaviour
     void Update()
     {
         startButton.interactable = !started;
+        unlockablesCountField.text = $"Unlock:{UnlockableCount}";
 
         if (!started)
             return;
@@ -94,7 +95,6 @@ public class GameScene : MonoBehaviour
         // displayHp.text = $"HP:{character.runtimeParamsContainer.Hp:#.#}";
         displayHp.text = $"HP:{Mathf.Ceil(character.runtimeParamsContainer.Hp)}";
         sliderHp.value = character.runtimeParamsContainer.Hp/character.paramsContainer.Hp;
-        
 
         if (dungeon != null)
         {
@@ -130,15 +130,10 @@ public class GameScene : MonoBehaviour
                     continue;
 
                 GridItem item = Instantiate(gridItemPrefab);
-                
-                item.IsFireplace = entrance.IsFireplace;
-                item.DungeonOperation = entrance.Operation; 
-                item.Params = entrance.ParamsContainer;
-                item.IsRed = entrance.IsRed;
 
                 if (grid.TryPlaceItem(item, j, i, onComplete))
                 {
-                    item.PortalsCount = entrance.PortalsCount;
+                    item.Initialize(entrance.ParamsContainer, entrance.Operation, entrance.IsRed, entrance.IsFireplace, entrance.PortalsCount);
                     return;
                 }
             }
@@ -185,8 +180,8 @@ public class GameScene : MonoBehaviour
             item.ResetItem();
         
         Grid.SetMovableAll(true);
-        character.ActiveRoom.IsMovable = false;
-        
+        Grid.SetLockedOnGridAll(true);
+
         character.transform.DOScale(Vector3.one * 1.2f, 0.4f).SetLoops(-1, LoopType.Yoyo);
 
         started = false;
@@ -195,6 +190,8 @@ public class GameScene : MonoBehaviour
 
         Vector2Int tilesOffset = GetTilesSpawnOffset();
         AddTiles(config, tilesOffset.x, tilesOffset.y);
+        
+        UnlockableCount += 2 + Mathf.CeilToInt((float)Grid.Items.Count(item => item != null) / 10);
         
         OnEndRun?.Invoke();
     }

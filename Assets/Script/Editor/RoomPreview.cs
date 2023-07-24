@@ -23,12 +23,8 @@ public static class RoomPreview
         
         GridItem item = Object.Instantiate(GridItem);
         
-        item.IsFireplace = target.IsFireplace;
-        item.IsRed = target.IsRed;
-        item.Params = target.ParamsContainer;
-        item.DungeonOperation = target.Operation;
-        item.PortalsCount = target.PortalsCount;
-            
+        item.Initialize(target.ParamsContainer, target.Operation, target.IsRed, target.IsFireplace, target.PortalsCount);
+
         EditorApplication.QueuePlayerLoopUpdate();
         SceneView.RepaintAll();
 

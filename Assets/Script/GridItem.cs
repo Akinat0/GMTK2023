@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Lean.Touch;
@@ -17,10 +17,10 @@ public enum Direction
 [RequireComponent(typeof(LeanDragTranslateAlong), typeof(LeanSelectableByFinger))]
 public class GridItem : MonoBehaviour
 {
-    public static Direction[] Neighbours = new[] { Direction.Top, Direction.Right, Direction.Bottom, Direction.Left };
+    public static readonly IReadOnlyCollection<Direction> Neighbours = new[] { Direction.Top, Direction.Right, Direction.Bottom, Direction.Left };
     
-    [SerializeField] ParamsContainer paramsContainer;
-    [SerializeField] DungeonMultiplierOperation dungeonOperation;
+    ParamsContainer paramsContainer;
+    DungeonMultiplierOperation dungeonOperation;
     
     #region components
     
@@ -74,11 +74,7 @@ public class GridItem : MonoBehaviour
     public DungeonMultiplierOperation DungeonOperation
     {
         get => dungeonOperation;
-        set
-        {
-            dungeonOperation = value;
-            GridItemView.Initialize(this);
-        }
+        set => dungeonOperation = value;
     }
 
     public bool IsRed { get; set; }
@@ -113,7 +109,7 @@ public class GridItem : MonoBehaviour
             
             UpdateDragTranslate();
             UpdatePortals();
-            LeanSelectableByFinger.enabled = !isLockedOnGrid;
+            // LeanSelectableByFinger.enabled = !isLockedOnGrid;
         }
     }
     
@@ -136,6 +132,17 @@ public class GridItem : MonoBehaviour
     }
 
     protected GridController Grid { get; set; }
+
+    public void Initialize(ParamsContainer paramsContainer, DungeonMultiplierOperation operation, bool isRed, bool isFireplace, int portalsCount)
+    {
+        Params = paramsContainer;
+        DungeonOperation = operation;
+        IsRed = false;
+        IsFireplace = isFireplace;
+        PortalsCount = portalsCount;
+        
+        GridItemView.Initialize(this);
+    }
     
     public void AttachItem(GridController grid, int x, int y)
     {
@@ -204,6 +211,12 @@ public class GridItem : MonoBehaviour
     
     void OnSelectedFingerHandler(LeanFinger finger)
     {
+        if (IsLockedOnGrid && GameScene.UnlockableCount > 0 && this != GameScene.Character.ActiveRoom)
+        {
+            GameScene.UnlockableCount--;
+            IsLockedOnGrid = false;
+        }
+        
         if(Grid != null)
             Grid.InvokeOnSelectFingerDown(this);
     }
@@ -233,13 +246,14 @@ public class GridItem : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    
     void OnValidate()
     {
         LeanDragTranslateAlong drag = GetComponent<LeanDragTranslateAlong>();
         drag.ScreenDepth.Conversion = LeanScreenDepth.ConversionType.PlaneIntercept;
         drag.Damping = 20;
-
     }
+    
 #endif
     
     public void MarkAsNotValid()

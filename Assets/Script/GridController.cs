@@ -182,9 +182,24 @@ public class GridController : MonoBehaviour
     {
         if(items == null || items.Length == 0)
             return;
-        
-        foreach (var item in items.Where(item => item != null && !item.IsFireplace && item != GameScene.Character.ActiveRoom))
+
+        foreach (var item in items.Where(item => item != null))
+        {
+            if (item == GameScene.Character.ActiveRoom)
+            {
+                item.IsLockedOnGrid = true;
+                continue;
+            }
+
+            if (item.IsFireplace)
+            {
+                item.IsLockedOnGrid = false;
+                continue;
+            }
+            
+            
             item.IsLockedOnGrid = isLocked;
+        }
     }
 
     public void InvokeOnSelectFingerDown(GridItem gridItem)

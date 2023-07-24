@@ -20,6 +20,7 @@ MonoBehaviour:
       Hp: 0
     portalsCount: 4
     isRed: 1
+    isFireplace: 0
   - operation:
       operation: 6
       value: 2
@@ -27,6 +28,7 @@ MonoBehaviour:
       Hp: 0
     portalsCount: 2
     isRed: 0
+    isFireplace: 0
   - operation:
       operation: 6
       value: 2
@@ -34,3 +36,12 @@ MonoBehaviour:
       Hp: 0
     portalsCount: 2
     isRed: 0
+    isFireplace: 0
+  - operation:
+      operation: 6
+      value: 2
+    paramsContainer:
+      Hp: 0
+    portalsCount: 2
+    isRed: 0
+    isFireplace: 0

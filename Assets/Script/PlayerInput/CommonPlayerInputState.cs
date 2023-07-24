@@ -28,8 +28,8 @@ public class CommonPlayerInputState : PlayerInputState
 
     public override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-            SetState<BoxSelectionPlayerInputState>();
+        // if (Input.GetKeyDown(KeyCode.LeftShift))
+        //     SetState<BoxSelectionPlayerInputState>();
     }
     
     public override void Disable()
@@ -65,7 +65,7 @@ public class CommonPlayerInputState : PlayerInputState
         if (!PlayerInput.Grid.TryGetCellCoordinates(item.transform.position, out int x, out int y)
             || !PlayerInput.Grid.TryPlaceItem(item, x, y)) //place successful
         {
-            if (PlayerInput.Grid.IsCellOnGrid(x, y))
+            if (PlayerInput.Grid.IsCellOnGrid(x, y) && !PlayerInput.Grid.GetCellItem(x, y).IsLockedOnGrid)
             {
                 //swap items
                 GridItem busyItem = PlayerInput.Grid.DetachItem(x, y); //detach busy cell

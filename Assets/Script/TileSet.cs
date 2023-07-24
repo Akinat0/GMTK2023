@@ -8,7 +8,6 @@ public class TileSet : ScriptableObject
     [Serializable]
     public class Entrance
     {
-
         public DungeonMultiplierOperation Operation => operation;
         public ParamsContainer ParamsContainer => paramsContainer;
         public int PortalsCount => portalsCount;
@@ -20,8 +19,7 @@ public class TileSet : ScriptableObject
         [SerializeField] int portalsCount = 2;
         [SerializeField] bool isRed;
         [SerializeField] bool isFireplace;
-        
-        
+
         protected bool Equals(Entrance other)
         {
             return operation.Equals(other.operation) 
