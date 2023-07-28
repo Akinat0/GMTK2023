@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Lean.Common;
-using Lean.Touch;
 using UnityEngine;
 
 public class GridController : MonoBehaviour
@@ -159,6 +158,11 @@ public class GridController : MonoBehaviour
         return IsCellOnGrid(x, y) ? items[GetCellIndex(x, y)] : null;
     }
     
+    public GridItem GetCellItem(int index)
+    {
+        return index < items.Length ?  items[index] : null;
+    }
+    
     public void SetMovable(int x, int y, bool isMovable)
     {
         items[GetCellIndex(x, y)].IsMovable = isMovable;
@@ -184,22 +188,7 @@ public class GridController : MonoBehaviour
             return;
 
         foreach (var item in items.Where(item => item != null))
-        {
-            if (item == GameScene.Character.ActiveRoom)
-            {
-                item.IsLockedOnGrid = true;
-                continue;
-            }
-
-            if (item.IsFireplace)
-            {
-                item.IsLockedOnGrid = false;
-                continue;
-            }
-            
-            
-            item.IsLockedOnGrid = isLocked;
-        }
+           item.IsLockedOnGrid = isLocked;
     }
 
     public void InvokeOnSelectFingerDown(GridItem gridItem)

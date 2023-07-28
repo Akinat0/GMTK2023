@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Abu.Tools;
 using DG.Tweening;
 using Script;
 using UnityEngine;
@@ -25,6 +28,7 @@ public class GameScene : MonoBehaviour
     public static GridController Grid => Instance != null ? Instance.grid : null;
     public static Character Character => Instance != null ? Instance.character : null;
     public static MainCamera Camera => Instance != null ? Instance.mainCamera : null;
+    public static GridPathCost PathCost => Instance != null ? Instance.pathCost : null;
     public static int UnlockableCount { get; set; }
 
     public static event Action OnStartRun;
@@ -39,12 +43,15 @@ public class GameScene : MonoBehaviour
     [SerializeField] GameObject win;
     [SerializeField] Button startButton;
 
+    GridPathCost pathCost;
+
     bool started;
 
     void Awake()
     {
         Instance = this;
         Grid.Build(50, 50);
+        pathCost = new GridPathCost(Grid);
         
         AddTiles(levelConfig.StartTileSet, 2, 2, SpawnCharacter);
 
@@ -63,6 +70,24 @@ public class GameScene : MonoBehaviour
         character.transform.DOScale(Vector3.one, 0.2f);
         character.ActiveRoom = startRoom;
         Grid.SetLockedOnGrid(startRoom.X, startRoom.Y, true);
+    }
+
+    void ChangeFireplace()
+    {
+        PathCost.Evaluate(character.ActiveRoom);
+        
+        foreach (var item in Grid.Items.Where(item => item != null))
+            item.PathCost = item.PathCost * item.PathCost * item.EmptyNeighboursCount;
+
+        GridItem fireplaceItem = Grid.Items.First(item => item != null && item != character.ActiveRoom && item.IsFireplace);
+        
+        var items = Grid.Items.Where(item => item != null && !item.IsFireplace && item.EmptyNeighboursCount > 0).ToArray();
+        var weights = items.Select(item => item.PathCost).ToArray();
+
+        GridItem selectedPoint = items[Utility.GetRandomWeightedIndex(weights)];
+
+        if(selectedPoint.TryGetEmptyNeighbourCoord(out int x, out int y))
+            Grid.TryPlaceItem(fireplaceItem, x, y);
     }
     
     void AddTiles(TileSet tileSet, int xOffset = 0, int yOffset = 0, Action onComplete = null)
@@ -189,9 +214,12 @@ public class GameScene : MonoBehaviour
         TileSet config = levelConfig.RandomTileSets.ElementAt(Random.Range(0, levelConfig.RandomTileSets.Count));
 
         Vector2Int tilesOffset = GetTilesSpawnOffset();
-        AddTiles(config, tilesOffset.x, tilesOffset.y);
         
+        ChangeFireplace();
         UnlockableCount += 2 + Mathf.CeilToInt((float)Grid.Items.Count(item => item != null) / 10);
+        
+        AddTiles(config, tilesOffset.x, tilesOffset.y);
+
         
         OnEndRun?.Invoke();
     }

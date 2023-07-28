@@ -43,7 +43,10 @@ public class GridItem : MonoBehaviour
     public int X { get; set; }
     public int Y { get; set; }
 
+    public int PathCost { get; set; }
+
     public int NeighboursCount => Neighbours.Select(GetNeighbour).Count(neighbour => neighbour != null);
+    public int EmptyNeighboursCount => Neighbours.Select(GetNeighbourCoordinates).Count(coord => !Grid.IsBusyCell(coord.x, coord.y));
     
     public bool IsOnGrid { get; private set; }
 
@@ -185,6 +188,49 @@ public class GridItem : MonoBehaviour
             _ => null
         };
     }
+    
+    public Vector2Int GetNeighbourCoordinates(Direction direction)
+    {
+        if (Grid == null)
+            return new Vector2Int(-1, -1);
+        
+        return direction switch
+        {
+            Direction.Right => new Vector2Int(X + 1, Y),
+            Direction.Left => new Vector2Int(X - 1, Y),
+            Direction.Top => new Vector2Int(X, Y - 1),
+            Direction.Bottom => new Vector2Int(X, Y + 1),
+            _ => new Vector2Int(-1, -1)
+        };
+    }
+
+    public bool TryGetEmptyNeighbourCoord(out int x, out int y)
+    {
+        x = -1;
+        y = -1;
+
+        if (Grid == null)
+            return false;
+
+        foreach (var direction in Neighbours.OrderBy(_ => Random.value))
+        {
+            Vector2Int coord = GetNeighbourCoordinates(direction);
+
+            if (Grid.IsCellOnGrid(coord.x, coord.y) && !Grid.IsBusyCell(coord.x, coord.y))
+            {
+                x = coord.x;
+                y = coord.y;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public IEnumerable<GridItem> GetNeighbours()
+    {
+        return Neighbours.Select(GetNeighbour).Where(neighbour => neighbour != null);
+    }
 
 
     void Awake()
@@ -211,7 +257,7 @@ public class GridItem : MonoBehaviour
     
     void OnSelectedFingerHandler(LeanFinger finger)
     {
-        if (IsLockedOnGrid && GameScene.UnlockableCount > 0 && this != GameScene.Character.ActiveRoom)
+        if (IsLockedOnGrid && GameScene.UnlockableCount > 0 && !IsFireplace)
         {
             GameScene.UnlockableCount--;
             IsLockedOnGrid = false;
@@ -274,4 +320,6 @@ public class GridItem : MonoBehaviour
     {
         LeanDragTranslateAlong.enabled = !isLockedOnGrid && isMovable;
     }
+    
+    
 }

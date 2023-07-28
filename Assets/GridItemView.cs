@@ -1,3 +1,5 @@
+// #define GRID_DEBUG
+
 using TMPro;
 using UnityEngine;
 
@@ -11,9 +13,15 @@ public class GridItemView : MonoBehaviour
     [SerializeField] Sprite spriteHeal5;
     [SerializeField] Sprite spriteFireplace;
     [SerializeField] Sprite spriteSqrt;
+
+    GridItem gridItem;
     
     public void Initialize(GridItem item)
     {
+        gridItem = item;
+        
+#if !GRID_DEBUG
+
         spriteRenderer.enabled = true;
         modifierText.enabled = false;
 
@@ -50,5 +58,29 @@ public class GridItemView : MonoBehaviour
         
         modifierText.enabled = item.DungeonOperation.Operator != DungeonMultiplierOperation.Operation.None;
         modifierText.text = item.DungeonOperation.ToString();
+#endif
     }
+
+#if GRID_DEBUG
+    void Update()
+    {
+        modifierText.enabled = false;
+        spriteRenderer.enabled = false;
+        
+        if (gridItem.IsFireplace)
+        {
+            spriteRenderer.enabled = true;
+            spriteRenderer.sprite = spriteFireplace;
+            return;
+        }
+        else
+        {
+            modifierText.enabled = true;
+            modifierText.text = gridItem.PathCost.ToString();
+        }
+        
+    }
+    
+#endif
+    
 }

@@ -9,7 +9,7 @@ public class GridTile : MonoBehaviour
     [SerializeField] Color hoverColor;
     [SerializeField] Color blockedColor;
     [SerializeField] SpriteRenderer renderer;
-
+    
     public int X { get; private set; }
     public int Y { get; private set; }
 
