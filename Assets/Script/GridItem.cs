@@ -64,6 +64,8 @@ public class GridItem : MonoBehaviour
         }
     }
 
+    public bool IsUsed { get; private set; }
+
     public ParamsContainer Params
     {
         get => paramsContainer;
@@ -273,14 +275,18 @@ public class GridItem : MonoBehaviour
             Grid.InvokeOnSelectFingerUp(this);
     }
 
-    public void DisableItemContent()
+    public void UseItem()
     {
+        IsUsed = true;
+        
         if(GridItemAlpha != null)
             GridItemAlpha.SetAlpha(0.3f);
     }
 
     public void ResetItem()
     {
+        IsUsed = false;
+        
         if(GridItemAlpha != null)
             GridItemAlpha.SetAlpha(1);
     }

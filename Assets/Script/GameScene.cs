@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,17 +17,19 @@ public class GameScene : MonoBehaviour
     static GameScene Instance { get; set; }
 
     [SerializeField] GridController grid;
-    [SerializeField] Character characterPrefab;
+    [SerializeField] Character roguePrefab;
+    [SerializeField] Character minotaurPrefab;
     [SerializeField] GridItem gridItemPrefab;
     [SerializeField] LevelConfig levelConfig;
     [SerializeField] MainCamera mainCamera;
 
-    Character character;
+    Character rogueCharacter;
+    Character minotaurCharacter;
 
     Dungeon dungeon;
 
     public static GridController Grid => Instance != null ? Instance.grid : null;
-    public static Character Character => Instance != null ? Instance.character : null;
+    public static Character Character => Instance != null ? Instance.rogueCharacter : null;
     public static MainCamera Camera => Instance != null ? Instance.mainCamera : null;
     public static GridPathCost PathCost => Instance != null ? Instance.pathCost : null;
     public static int UnlockableCount { get; set; }
@@ -36,10 +39,12 @@ public class GameScene : MonoBehaviour
 
     //UI DISPLAY
     [SerializeField] TextMeshProUGUI displayHp;
+    [SerializeField] TextMeshProUGUI minotaurDisplayHp;
     [SerializeField] TextMeshProUGUI multiplierField;
     [SerializeField] TextMeshProUGUI unlockablesCountField;
     [SerializeField] TextMeshProUGUI[] roomsCountField;
     [SerializeField] Slider sliderHp;
+    [SerializeField] Slider minotaurSliderHp;
     [SerializeField] GameObject win;
     [SerializeField] Button startButton;
 
@@ -52,34 +57,44 @@ public class GameScene : MonoBehaviour
         Instance = this;
         Grid.Build(50, 50);
         pathCost = new GridPathCost(Grid);
+
+        dungeon = new Dungeon();
         
-        AddTiles(levelConfig.StartTileSet, 2, 2, SpawnCharacter);
+        AddTiles(levelConfig.StartTileSet, 2, 2, SpawnCharacters);
 
         multiplierField.transform.DOScale(Vector3.one * 1.07f, 2f).SetLoops(-1, LoopType.Yoyo);
         
         startButton.onClick.AddListener(StartGame);
     }
 
-    void SpawnCharacter()
+    void SpawnCharacters()
     {
-        GridItem[] startRooms = Grid.Items.Where(item => item != null && item.NeighboursCount == 1).ToArray();
-        GridItem startRoom = startRooms[Random.Range(0, startRooms.Length)];
-            
-        character = Instantiate(characterPrefab, startRoom.transform.position, Quaternion.identity);
+        GridItem[] startRooms = Grid.Items.Where(item => item != null && item.IsFireplace).Take(2).ToArray();
+
+        rogueCharacter = SpawnCharacter(startRooms[0], roguePrefab);
+        minotaurCharacter = SpawnCharacter(startRooms[1], minotaurPrefab);
+    }
+    
+    Character SpawnCharacter(GridItem startRoom, Character characterPrefab)
+    {
+        Character character = Instantiate(characterPrefab, startRoom.transform.position, Quaternion.identity);
         character.transform.localScale = Vector3.zero;
         character.transform.DOScale(Vector3.one, 0.2f);
-        character.ActiveRoom = startRoom;
+        character.Initialize(dungeon, startRoom);
+        
         Grid.SetLockedOnGrid(startRoom.X, startRoom.Y, true);
+
+        return character;
     }
 
     void ChangeFireplace()
     {
-        PathCost.Evaluate(character.ActiveRoom);
+        PathCost.Evaluate(rogueCharacter.ActiveRoom);
         
         foreach (var item in Grid.Items.Where(item => item != null))
             item.PathCost = item.PathCost * item.PathCost * item.EmptyNeighboursCount;
 
-        GridItem fireplaceItem = Grid.Items.First(item => item != null && item != character.ActiveRoom && item.IsFireplace);
+        GridItem fireplaceItem = Grid.Items.First(item => item != null && item != rogueCharacter.ActiveRoom && item.IsFireplace);
         
         var items = Grid.Items.Where(item => item != null && !item.IsFireplace && item.EmptyNeighboursCount > 0).ToArray();
         var weights = items.Select(item => item.PathCost).ToArray();
@@ -117,9 +132,12 @@ public class GameScene : MonoBehaviour
         if (!started)
             return;
         
-        // displayHp.text = $"HP:{character.runtimeParamsContainer.Hp:#.#}";
-        displayHp.text = $"HP:{Mathf.Ceil(character.runtimeParamsContainer.Hp)}";
-        sliderHp.value = character.runtimeParamsContainer.Hp/character.paramsContainer.Hp;
+        // displayHp.text = $"HP:{rogueCharacter.runtimeParamsContainer.Hp:#.#}";
+        displayHp.text = $"HP:{Mathf.Ceil(rogueCharacter.runtimeParamsContainer.Hp)}";
+        sliderHp.value = rogueCharacter.runtimeParamsContainer.Hp/rogueCharacter.paramsContainer.Hp;
+        
+        minotaurDisplayHp.text = $"HP:{Mathf.Ceil(minotaurCharacter.runtimeParamsContainer.Hp)}";
+        minotaurSliderHp.value = minotaurCharacter.runtimeParamsContainer.Hp/minotaurCharacter.paramsContainer.Hp;
 
         if (dungeon != null)
         {
@@ -173,7 +191,7 @@ public class GameScene : MonoBehaviour
 
     public void StartGame()
     {
-        if(character == null)
+        if(rogueCharacter == null)
             return;
 
         if(!CheckIsValid())
@@ -181,55 +199,9 @@ public class GameScene : MonoBehaviour
         
         Grid.SetLockedOnGridAll(true);
 
-        foreach (var item in Grid.Items.Where(item => item != null))
-            item.ResetItem();
+        OnStartRun?.Invoke();
 
-        dungeon ??= new Dungeon();
-        
-        StartRun();
-    
-
-        void StartRun()
-        {
-            OnStartRun?.Invoke();
-            
-            character.StartRun(dungeon, Win, Lose);
-            started = true;
-        }
-    }
-
-    //Player is still playing 
-    void Win()
-    {
-        foreach (var item in Grid.Items.Where(item => item != null))
-            item.ResetItem();
-        
-        Grid.SetMovableAll(true);
-        Grid.SetLockedOnGridAll(true);
-
-        character.transform.DOScale(Vector3.one * 1.2f, 0.4f).SetLoops(-1, LoopType.Yoyo);
-
-        started = false;
-        
-        TileSet config = levelConfig.RandomTileSets.ElementAt(Random.Range(0, levelConfig.RandomTileSets.Count));
-
-        Vector2Int tilesOffset = GetTilesSpawnOffset();
-        
-        ChangeFireplace();
-        UnlockableCount += 2 + Mathf.CeilToInt((float)Grid.Items.Count(item => item != null) / 10);
-        
-        AddTiles(config, tilesOffset.x, tilesOffset.y);
-
-        
-        OnEndRun?.Invoke();
-    }
-
-    //Player won 
-    void Lose()
-    {
-        character.transform.DOScale(Vector3.zero, 0.2f);
-        win.SetActive(true);
-        started = false;
+        StartCoroutine(PlayRoutine());
     }
 
     bool CheckIsValid()
@@ -247,7 +219,7 @@ public class GameScene : MonoBehaviour
 
         HashSet<GridItem> checkedItems = new HashSet<GridItem>();
 
-        CheckIsValidItem(character.ActiveRoom, checkedItems);
+        CheckIsValidItem(rogueCharacter.ActiveRoom, checkedItems);
 
         foreach (GridItem separatedItem in grid.Items.Where(item => item != null && !checkedItems.Contains(item)))
         {
@@ -286,5 +258,71 @@ public class GameScene : MonoBehaviour
             return Vector2Int.zero;
 
         return new Vector2Int(x + 1, y + 1);
+    }
+
+    IEnumerator PlayRoutine()
+    {
+        started = true;
+        rogueCharacter.Reset();
+        minotaurCharacter.Reset();
+        
+        while (true)
+        {
+            bool canContinue = false;
+
+            DelegateGroup finished = new (2, () => canContinue = true);
+            
+            rogueCharacter.NextRoom(finished.Invoke);
+            minotaurCharacter.NextRoom(finished.Invoke);
+            dungeon.RoomsCount++;
+            yield return new WaitUntil(() => canContinue);
+
+            if (rogueCharacter.runtimeParamsContainer.Hp <= 0)
+            {
+                OpenWinScreen();
+                break;
+            }
+
+            if (rogueCharacter.ActiveRoom.IsFireplace && rogueCharacter.ActiveRoom != rogueCharacter.StartRoom)
+            {
+                Continue();
+                break;
+            }
+        }
+
+        started = false;
+    }
+    
+    //Player is still playing 
+    void Continue()
+    {
+        foreach (var item in Grid.Items.Where(item => item != null))
+            item.ResetItem();
+        
+        Grid.SetMovableAll(true);
+        Grid.SetLockedOnGridAll(true);
+
+        rogueCharacter.transform.DOScale(Vector3.one * 1.2f, 0.4f).SetLoops(-1, LoopType.Yoyo);
+
+        started = false;
+        
+        TileSet config = levelConfig.RandomTileSets.ElementAt(Random.Range(0, levelConfig.RandomTileSets.Count));
+
+        Vector2Int tilesOffset = GetTilesSpawnOffset();
+        
+        ChangeFireplace();
+        UnlockableCount += 2 + Mathf.CeilToInt((float)Grid.Items.Count(item => item != null) / 10);
+        
+        AddTiles(config, tilesOffset.x, tilesOffset.y);
+
+        OnEndRun?.Invoke();
+    }
+
+    //Player won 
+    void OpenWinScreen()
+    {
+        rogueCharacter.transform.DOScale(Vector3.zero, 0.2f);
+        win.SetActive(true);
+        started = false;
     }
 }

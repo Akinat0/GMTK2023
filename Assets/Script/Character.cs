@@ -9,20 +9,17 @@ using Random = UnityEngine.Random;
 public class Character : MonoBehaviour
 {
     public ParamsContainer paramsContainer;
-    
+
     public ParamsContainer runtimeParamsContainer;
 
-    Action OnSuccess { get; set; }
-    Action OnFail { get; set; }
-    
-    readonly HashSet<GridItem> visitedGrids = new ();
-    readonly Stack<GridItem> history = new ();
+    readonly HashSet<GridItem> visitedGrids = new();
+    readonly Stack<GridItem> history = new();
+    readonly List<GridItem> exits = new();
 
-
-    public GridItem ActiveRoom { get; set; }
+    public GridItem ActiveRoom { get; private set; }
+    public GridItem StartRoom { get; private set; }
 
     Dungeon Dungeon { get; set; }
-    GridItem StartRoom { get; set; }
 
     [SerializeField] TextMeshPro damage;
     [SerializeField] Color red;
@@ -33,107 +30,91 @@ public class Character : MonoBehaviour
         runtimeParamsContainer = new ParamsContainer(paramsContainer);
     }
 
-    public void StartRun(Dungeon dungeon, Action onSuccess, Action onFail)
+    public void Initialize(Dungeon dungeon, GridItem startRoom)
+    {
+        Dungeon = dungeon;
+        StartRoom = startRoom;
+        ActiveRoom = startRoom;
+    }
+    
+    public void Reset()
     {
         history.Clear();
         visitedGrids.Clear();
         
-        OnSuccess = onSuccess;
-        OnFail = onFail;
+        StartRoom = ActiveRoom;
         
-        Dungeon = dungeon;
-
-        if (GameScene.Grid.TryGetCellCoordinates(transform.position, out int x, out int y))
-            StartRoom = GameScene.Grid.GetCellItem(x, y);
-        
-
-        BeginTheRoom(StartRoom, null);
+        history.Push(StartRoom);
+        visitedGrids.Add(StartRoom);
+        StartRoom.UseItem();
     }
 
-    void BeginTheRoom(GridItem room, GridItem prevRoom)
+    public void NextRoom(Action onFinished)
     {
-        void NextRoom()
+        UpdateExitsList(ActiveRoom);
+
+        var nextRoom = exits[Random.Range(0, exits.Count)];
+        
+        void Finished()
         {
-            visitedGrids.Add(room);
-            room.DisableItemContent();
-            
-            room.DungeonOperation.Apply(Dungeon);
-            runtimeParamsContainer.Apply(room.Params, Dungeon);
-
-            if (room.Params.Hp != 0)
-            {
-                string toDisplay = room.Params.Hp > 0 ? "+" + room.Params.Hp * Dungeon.Multiplier : room.Params.Hp * Dungeon.Multiplier + "";
-                Color toDisplayColor = room.Params.Hp > 0 ? green : red; // change to palette colors
-                damage.text = toDisplay;
-                damage.color = toDisplayColor;
-                damage.transform.DOPunchScale(Vector3.one * 0.3f, 0.5f, 0); //idk if this one working or not
-            }
-            else damage.text = null;
-
-            if (runtimeParamsContainer.Hp <= 0)
-            {
-                OnFail?.Invoke();
-                return;
-            }
-            
-            if (room.IsFireplace && room != StartRoom)
-            {
-                OnSuccess?.Invoke();
-                return;
-            }
-            
-            List<GridItem> exits = new();
-
-            foreach (var direction in GridItem.Neighbours)
-            {
-                var neighbour = room.GetNeighbour(direction);
-                
-                if(neighbour != null && neighbour != prevRoom && !visitedGrids.Contains(neighbour))
-                    exits.Add(neighbour);
-            }
-            
-            if (exits.Count == 0)
-            {
-                GridItem backRoom;
-
-            
-                backRoom = history.Peek();
-
-                foreach (var direction in GridItem.Neighbours)
-                {
-                    exits.Clear();
-
-                    var neighbour = backRoom.GetNeighbour(direction);
-
-                    if (neighbour != null && !visitedGrids.Contains(neighbour))
-                        exits.Add(neighbour);
-                }
-
-                if (exits.Count == 0)
-                    exits.Add(history.Pop());
-            }
-            else
-            {
-                history.Push(room);
-            }
-
-            var nextRoom = exits[Random.Range(0, exits.Count)];
-                
-            BeginTheRoom(nextRoom, room);
+            ProcessRoom(nextRoom);
+            ActiveRoom = nextRoom;
+            onFinished?.Invoke();
         }
-        
-        ActiveRoom = room;
 
-        Dungeon.RoomsCount++;
-        
         Sequence sequence = DOTween.Sequence();
         sequence
-            .Append(transform.DOMove(room.transform.position, 0.5f))
+            .Append(transform.DOMove(nextRoom.transform.position, 0.5f))
             .Join(transform.DOPunchScale(Vector3.one * 0.3f, 0.5f, 0))
-            .OnComplete(NextRoom);
+            .OnComplete(Finished);
 
         SoundManager.PlaySound("walk");
-       
     }
-    
+
+    void ProcessRoom(GridItem room)
+    {
+        damage.text = string.Empty; //clean text
+
+        if (!room.IsUsed)
+            ApplyRoom(room);
+
+        visitedGrids.Add(room);
+    }
+
+    void ApplyRoom(GridItem room)
+    {
+        room.DungeonOperation.Apply(Dungeon);
+        runtimeParamsContainer.Apply(room.Params, Dungeon);
+        room.UseItem();
+
+        if (room.Params.Hp != 0)
+        {
+            string toDisplay = room.Params.Hp > 0
+                ? "+" + room.Params.Hp * Dungeon.Multiplier
+                : room.Params.Hp * Dungeon.Multiplier + "";
+            Color toDisplayColor = room.Params.Hp > 0 ? green : red; // change to palette colors
+            damage.text = toDisplay;
+            damage.color = toDisplayColor;
+            damage.transform.DOPunchScale(Vector3.one * 0.3f, 0.5f, 0); //idk if this one working or not
+        }
+        else damage.text = string.Empty;
+    }
+
+    void UpdateExitsList(GridItem room)
+    {
+        exits.Clear();
+
+        foreach (var direction in GridItem.Neighbours)
+        {
+            var neighbour = room.GetNeighbour(direction);
+
+            if (neighbour != null && !visitedGrids.Contains(neighbour))
+                exits.Add(neighbour);
+        }
+
+        if (exits.Count == 0)
+            exits.Add(history.Pop());
+        else
+            history.Push(room);
+    }
 }
